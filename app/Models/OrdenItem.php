@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class OrdenItem extends Model
+{
+    protected $fillable = [
+        'orden_id', 'tipo', 'descripcion',
+        'cantidad', 'precio_unitario', 'subtotal',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'cantidad'        => 'decimal:2',
+            'precio_unitario' => 'decimal:2',
+            'subtotal'        => 'decimal:2',
+        ];
+    }
+
+    public function orden(): BelongsTo
+    {
+        return $this->belongsTo(Orden::class);
+    }
+
+    // Calcula el subtotal antes de guardar
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saving(function (OrdenItem $item) {
+            $item->subtotal = round($item->cantidad * $item->precio_unitario, 2);
+        });
+    }
+}

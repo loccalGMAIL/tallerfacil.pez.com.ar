@@ -1,0 +1,72 @@
+@extends('layouts.app')
+@section('title', 'Editar Cliente')
+
+@section('content')
+<div class="flex items-center gap-3 mb-6">
+    <a href="{{ route('clientes.show', $cliente) }}" class="text-gray-500 hover:text-gray-700 text-sm">← {{ $cliente->nombre }}</a>
+    <h1 class="text-xl font-bold text-gray-900">Editar cliente</h1>
+</div>
+
+<div class="max-w-2xl bg-white rounded-xl shadow p-6">
+    <form method="POST" action="{{ route('clientes.update', $cliente) }}">
+        @csrf
+        @method('PUT')
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nombre / Razón social <span class="text-red-500">*</span></label>
+                <input type="text" name="nombre" value="{{ old('nombre', $cliente->nombre) }}"
+                    class="w-full border rounded-lg px-3 py-2 text-sm @error('nombre') border-red-400 @enderror">
+                @error('nombre')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de documento</label>
+                <select name="tipo_doc" class="w-full border rounded-lg px-3 py-2 text-sm">
+                    @foreach(['DNI','CUIT','CUIL'] as $tipo)
+                    <option value="{{ $tipo }}" {{ old('tipo_doc', $cliente->tipo_doc) === $tipo ? 'selected' : '' }}>{{ $tipo }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Número de documento</label>
+                <input type="text" name="nro_doc" value="{{ old('nro_doc', $cliente->nro_doc) }}"
+                    class="w-full border rounded-lg px-3 py-2 text-sm @error('nro_doc') border-red-400 @enderror">
+                @error('nro_doc')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono <span class="text-red-500">*</span></label>
+                <input type="text" name="telefono_display" value="{{ old('telefono_display', $cliente->telefono_display) }}"
+                    class="w-full border rounded-lg px-3 py-2 text-sm @error('telefono_display') border-red-400 @enderror">
+                @error('telefono_display')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" name="email" value="{{ old('email', $cliente->email) }}"
+                    class="w-full border rounded-lg px-3 py-2 text-sm">
+            </div>
+
+            <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                <input type="text" name="direccion" value="{{ old('direccion', $cliente->direccion) }}"
+                    class="w-full border rounded-lg px-3 py-2 text-sm">
+            </div>
+
+            <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Notas</label>
+                <textarea name="notas" rows="3" class="w-full border rounded-lg px-3 py-2 text-sm">{{ old('notas', $cliente->notas) }}</textarea>
+            </div>
+        </div>
+
+        <div class="flex gap-3">
+            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg text-sm font-medium">
+                Guardar cambios
+            </button>
+            <a href="{{ route('clientes.show', $cliente) }}" class="text-gray-600 px-4 py-2 text-sm">Cancelar</a>
+        </div>
+    </form>
+</div>
+@endsection
