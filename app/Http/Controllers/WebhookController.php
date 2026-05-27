@@ -29,25 +29,29 @@ class WebhookController extends Controller
 
     private function procesarActualizacion(array $payload): void
     {
-        $updates = data_get($payload, 'data', [data_get($payload, 'data', $payload)]);
-        if (!is_array($updates)) {
-            $updates = [$updates];
+        $updates = data_get($payload, 'data', []);
+        if (!is_array($updates) || empty($updates)) {
+            $updates = [$payload];
         }
 
         foreach ($updates as $update) {
             $messageId = data_get($update, 'key.id') ?? data_get($update, 'id');
-            $ack       = data_get($update, 'update.message.ackStatus')
-                      ?? data_get($update, 'ack')
-                      ?? data_get($update, 'status');
 
-            if (!$messageId || $ack === null) {
+            // Evolution API envía status como string ("DELIVERY_ACK", "READ", "ERROR")
+            // o como número ACK Baileys (2, 3, -1)
+            $ackStr = data_get($update, 'update.status')
+                   ?? data_get($update, 'update.message.ackStatus')
+                   ?? data_get($update, 'status')
+                   ?? data_get($update, 'ack');
+
+            if (!$messageId || $ackStr === null) {
                 continue;
             }
 
-            $estado = match ((int) $ack) {
-                2 => ['estado_entrega' => 'entregado', 'fecha_entregado' => now()],
-                3 => ['estado_entrega' => 'leido',     'fecha_leido'     => now()],
-                -1 => ['estado_entrega' => 'fallido'],
+            $estado = match (true) {
+                in_array($ackStr, ['DELIVERY_ACK', 2]) => ['estado_entrega' => 'entregado', 'fecha_entregado' => now()],
+                in_array($ackStr, ['READ', 'PLAYED', 3]) => ['estado_entrega' => 'leido', 'fecha_leido' => now()],
+                in_array($ackStr, ['ERROR', 'FAILED', -1]) => ['estado_entrega' => 'fallido'],
                 default => null,
             };
 
