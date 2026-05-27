@@ -12,30 +12,49 @@ class ClienteService
      */
     public function normalizarTelefono(string $telefono): string
     {
-        // Elimina todo excepto dígitos y el +
-        $limpio = preg_replace('/[^\d+]/', '', $telefono);
+        // Solo dígitos
+        $d = preg_replace('/[^\d]/', '', $telefono);
 
-        // Elimina el + del inicio si existe
-        $limpio = ltrim($limpio, '+');
-
-        // Ya está en formato completo 549XXXXXXXXXX (13 dígitos)
-        if (preg_match('/^549\d{10}$/', $limpio)) {
-            return $limpio;
+        // Ya completo: 549XXXXXXXXXX (13 dígitos)
+        if (preg_match('/^549\d{10}$/', $d)) {
+            return $d;
         }
 
-        // Empieza con 54 pero sin el 9 intermedio: 5411XXXXXXXX → 54911XXXXXXXX
-        if (preg_match('/^54((?!9)\d{10})$/', $limpio, $m)) {
+        // Con código de país sin el 9: 54XXXXXXXXXX (12 dígitos) → insertar 9
+        if (preg_match('/^54(\d{10})$/', $d, $m)) {
             return '549' . $m[1];
         }
 
-        // Número local con código de área (10 dígitos): 1144445555
-        if (preg_match('/^(\d{2,4})(\d{6,8})$/', $limpio, $m)) {
-            $area   = ltrim($m[1], '0');
-            $numero = $m[2];
-            // Elimina el 15 del celular si empieza con él
-            $numero = preg_replace('/^15/', '', $numero);
+        // Con código de país + 9 explícito mal formado: 549XXXXXXXX (12 dígitos sin celular)
+        // Omitimos, ya cubierto arriba.
 
-            return '549' . $area . $numero;
+        // Formatos con 0 inicial: 0(área)(15?)(número)
+        // Ejemplos: 011-4444-5555 (11 dig), 011-15-4444-5555 (13 dig), 0351-15-4444-5555
+        if (str_starts_with($d, '0') && strlen($d) >= 10) {
+            $sinCero = substr($d, 1);
+
+            // Intenta area=2 y area=3 dígitos, con y sin 15
+            foreach ([2, 3, 4] as $lenArea) {
+                if (strlen($sinCero) < $lenArea) continue;
+                $area  = substr($sinCero, 0, $lenArea);
+                $resto = substr($sinCero, $lenArea);
+
+                // Quita 15 si corresponde
+                if (str_starts_with($resto, '15')) {
+                    $resto = substr($resto, 2);
+                }
+
+                if (strlen($resto) === 8) {
+                    return '549' . $area . $resto;
+                }
+            }
+        }
+
+        // 10 dígitos sin 0 y sin país: área(2-4) + número(6-8)
+        if (preg_match('/^(\d{2,4})(\d{6,8})$/', $d, $m)) {
+            if (strlen($d) === 10) {
+                return '549' . $d;
+            }
         }
 
         throw new InvalidArgumentException("Teléfono inválido: {$telefono}");

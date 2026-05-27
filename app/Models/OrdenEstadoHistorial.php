@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrdenEstadoHistorial extends Model
 {
+    protected $table = 'orden_estados_historial';
+
     public $timestamps = false;
 
     protected $fillable = ['orden_id', 'estado', 'usuario_id', 'notas', 'fecha_hora'];

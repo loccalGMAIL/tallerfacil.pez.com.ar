@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Orden extends Model
 {
+    protected $table = 'ordenes';
+
     protected $fillable = [
         'numero', 'vehiculo_id', 'mecanico_id', 'fecha_ingreso',
         'km_ingreso', 'descripcion', 'estado', 'total_estimado',
