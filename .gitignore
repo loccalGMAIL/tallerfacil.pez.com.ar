@@ -23,3 +23,7 @@ Thumbs.db
 
 # Claude local config (no compartir)
 .claude/settings.local.json
+
+# Archivos del servidor de producción
+composer.phar
+public_html
