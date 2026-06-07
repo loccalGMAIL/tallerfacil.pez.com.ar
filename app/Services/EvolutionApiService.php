@@ -10,20 +10,20 @@ use Illuminate\Support\Facades\Log;
 
 class EvolutionApiService
 {
-    private ?WaConfig $config;
+    private ?WaConfig $config = null;
 
-    public function __construct()
+    private function config(): ?WaConfig
     {
-        $this->config = WaConfig::instancia();
+        return $this->config ??= WaConfig::instancia();
     }
 
     public function sendText(string $numero, string $texto): array
     {
         $this->ensureConfigured();
 
-        $response = Http::withHeaders(['apikey' => $this->config->getRawOriginal('api_key')])
+        $response = Http::withHeaders(['apikey' => $this->config()->getRawOriginal('api_key')])
             ->timeout(15)
-            ->post("{$this->config->url_base}/message/sendText/{$this->config->instancia}", [
+            ->post("{$this->config()->url_base}/message/sendText/{$this->config()->instancia}", [
                 'number' => $numero,
                 'text'   => $texto,
             ]);
@@ -40,9 +40,9 @@ class EvolutionApiService
         $this->ensureConfigured();
 
         try {
-            $response = Http::withHeaders(['apikey' => $this->config->getRawOriginal('api_key')])
+            $response = Http::withHeaders(['apikey' => $this->config()->getRawOriginal('api_key')])
                 ->timeout(10)
-                ->get("{$this->config->url_base}/instance/connectionState/{$this->config->instancia}");
+                ->get("{$this->config()->url_base}/instance/connectionState/{$this->config()->instancia}");
 
             return $response->json() ?? [];
         } catch (Exception $e) {
@@ -55,9 +55,9 @@ class EvolutionApiService
     {
         $this->ensureConfigured();
 
-        $response = Http::withHeaders(['apikey' => $this->config->getRawOriginal('api_key')])
+        $response = Http::withHeaders(['apikey' => $this->config()->getRawOriginal('api_key')])
             ->timeout(15)
-            ->get("{$this->config->url_base}/instance/connect/{$this->config->instancia}");
+            ->get("{$this->config()->url_base}/instance/connect/{$this->config()->instancia}");
 
         if ($response->failed()) {
             throw new Exception("No se pudo conectar a Evolution API: " . $response->body());
@@ -70,19 +70,20 @@ class EvolutionApiService
     {
         $this->ensureConfigured();
 
-        $response = Http::withHeaders(['apikey' => $this->config->getRawOriginal('api_key')])
+        $response = Http::withHeaders(['apikey' => $this->config()->getRawOriginal('api_key')])
             ->timeout(10)
-            ->delete("{$this->config->url_base}/instance/logout/{$this->config->instancia}");
+            ->delete("{$this->config()->url_base}/instance/logout/{$this->config()->instancia}");
 
         return $response->json() ?? [];
     }
 
     public function estaConfigurado(): bool
     {
-        return $this->config
-            && !empty($this->config->url_base)
-            && !empty($this->config->getRawOriginal('api_key'))
-            && !empty($this->config->instancia);
+        $config = $this->config();
+        return $config
+            && !empty($config->url_base)
+            && !empty($config->getRawOriginal('api_key'))
+            && !empty($config->instancia);
     }
 
     private function ensureConfigured(): void

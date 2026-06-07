@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTaller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WaMensaje extends Model
 {
+    use BelongsToTaller;
+
     protected $table = 'wa_mensajes';
 
     protected $fillable = [
         'cliente_id', 'orden_id', 'vehiculo_id', 'tipo', 'contenido',
         'origen', 'evolution_message_id', 'estado_entrega', 'error_detalle',
-        'intentos', 'fecha_hora', 'fecha_entregado', 'fecha_leido',
+        'intentos', 'fecha_hora', 'fecha_entregado', 'fecha_leido', 'taller_id',
     ];
 
     protected function casts(): array

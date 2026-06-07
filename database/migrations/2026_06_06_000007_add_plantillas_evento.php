@@ -7,9 +7,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Ampliar enums (MySQL)
-        DB::statement("ALTER TABLE wa_plantillas MODIFY COLUMN tipo ENUM('presupuesto','recepcion','recordatorio','listo','reparacion','entregado') NOT NULL");
-        DB::statement("ALTER TABLE wa_mensajes MODIFY COLUMN tipo ENUM('presupuesto','recepcion','recordatorio','listo','reparacion','entregado','manual') NOT NULL");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE wa_plantillas MODIFY COLUMN tipo ENUM('presupuesto','recepcion','recordatorio','listo','reparacion','entregado') NOT NULL");
+            DB::statement("ALTER TABLE wa_mensajes MODIFY COLUMN tipo ENUM('presupuesto','recepcion','recordatorio','listo','reparacion','entregado','manual') NOT NULL");
+        }
 
         // Insertar plantillas de evento nuevas (idempotente)
         $nuevas = [
@@ -35,7 +36,9 @@ return new class extends Migration
     public function down(): void
     {
         DB::table('wa_plantillas')->whereIn('tipo', ['listo', 'reparacion', 'entregado'])->delete();
-        DB::statement("ALTER TABLE wa_plantillas MODIFY COLUMN tipo ENUM('presupuesto','recepcion','recordatorio') NOT NULL");
-        DB::statement("ALTER TABLE wa_mensajes MODIFY COLUMN tipo ENUM('presupuesto','recepcion','recordatorio') NOT NULL");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE wa_plantillas MODIFY COLUMN tipo ENUM('presupuesto','recepcion','recordatorio') NOT NULL");
+            DB::statement("ALTER TABLE wa_mensajes MODIFY COLUMN tipo ENUM('presupuesto','recepcion','recordatorio') NOT NULL");
+        }
     }
 };

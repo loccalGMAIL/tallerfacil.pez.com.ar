@@ -1,39 +1,27 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     public function up(): void
     {
+        // La vista tiene WHERE id = 1 hardcodeado en wa_recordatorio_config.
+        // Se reemplaza por una query Eloquent en RecordatorioController que respeta el taller_id del contexto.
         if (DB::getDriverName() === 'mysql') {
-            // La vista referencia la columna; recrearla primero sin la rama de km
-            $this->recrearVistaSinKm();
-        }
-
-        if (Schema::hasColumn('wa_recordatorio_config', 'umbral_km')) {
-            Schema::table('wa_recordatorio_config', function (Blueprint $table) {
-                $table->dropColumn('umbral_km');
-            });
+            DB::statement('DROP VIEW IF EXISTS v_vehiculos_para_recordatorio');
         }
     }
 
     public function down(): void
     {
-        if (!Schema::hasColumn('wa_recordatorio_config', 'umbral_km')) {
-            Schema::table('wa_recordatorio_config', function (Blueprint $table) {
-                $table->unsignedInteger('umbral_km')->nullable()->default(10000)->after('umbral_meses');
-            });
+        if (DB::getDriverName() !== 'mysql') {
+            return;
         }
-    }
-
-    private function recrearVistaSinKm(): void
-    {
+        // Recrear la vista single-tenant original para poder revertir
         DB::statement("
-            CREATE OR REPLACE VIEW v_vehiculos_para_recordatorio AS
+            CREATE VIEW v_vehiculos_para_recordatorio AS
             SELECT
                 v.id            AS vehiculo_id,
                 v.patente,
