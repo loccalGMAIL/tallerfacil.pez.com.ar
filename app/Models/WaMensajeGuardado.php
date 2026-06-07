@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTaller;
 use Illuminate\Database\Eloquent\Model;
 
 class WaMensajeGuardado extends Model
 {
+    use BelongsToTaller;
+
     protected $table = 'wa_mensajes_guardados';
 
-    protected $fillable = ['nombre', 'texto', 'activo'];
+    protected $fillable = ['nombre', 'texto', 'activo', 'taller_id'];
 
     protected function casts(): array
     {

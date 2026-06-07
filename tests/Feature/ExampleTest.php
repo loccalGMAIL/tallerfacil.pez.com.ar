@@ -10,10 +10,11 @@ class ExampleTest extends TestCase
     /**
      * A basic test example.
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_the_application_redirects_to_login_when_unauthenticated(): void
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        // La ruta raíz requiere autenticación, redirige a login
+        $response->assertRedirect('/login');
     }
 }

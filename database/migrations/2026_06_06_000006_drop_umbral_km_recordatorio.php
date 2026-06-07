@@ -9,8 +9,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // La vista referencia la columna; recrearla primero sin la rama de km
-        $this->recrearVistaSinKm();
+        if (DB::getDriverName() === 'mysql') {
+            // La vista referencia la columna; recrearla primero sin la rama de km
+            $this->recrearVistaSinKm();
+        }
 
         if (Schema::hasColumn('wa_recordatorio_config', 'umbral_km')) {
             Schema::table('wa_recordatorio_config', function (Blueprint $table) {
