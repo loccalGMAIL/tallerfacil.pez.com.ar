@@ -51,7 +51,7 @@ class Cliente extends Model
     public function tieneOrdenesAbiertas(): bool
     {
         return $this->ordenes()
-            ->whereNotIn('estado', ['entregada', 'cancelada'])
+            ->whereNotIn('estado', ['entregado', 'cancelado'])
             ->exists();
     }
 }

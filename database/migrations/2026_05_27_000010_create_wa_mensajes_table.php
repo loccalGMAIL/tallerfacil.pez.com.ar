@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('cliente_id')->constrained('clientes');
             $table->foreignId('orden_id')->nullable()->constrained('ordenes');
             $table->foreignId('vehiculo_id')->nullable()->constrained('vehiculos');
-            $table->enum('tipo', ['presupuesto', 'recepcion', 'recordatorio']);
+            $table->enum('tipo', ['presupuesto', 'recepcion', 'recordatorio', 'listo', 'reparacion', 'entregado', 'manual']);
             $table->text('contenido');
             $table->enum('origen', ['php', 'n8n'])->default('php');
             $table->string('evolution_message_id', 100)->nullable();

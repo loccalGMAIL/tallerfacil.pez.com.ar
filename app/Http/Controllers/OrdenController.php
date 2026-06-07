@@ -9,6 +9,7 @@ use App\Models\OrdenItem;
 use App\Models\Usuario;
 use App\Models\Vehiculo;
 use App\Services\OrdenService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -56,11 +57,43 @@ class OrdenController extends Controller
 
     public function show(Orden $orden): View
     {
-        $orden->load(['vehiculo.cliente', 'mecanico', 'items', 'historial.usuario', 'waMensajes']);
+        $orden->load(['vehiculo.cliente', 'mecanico', 'items', 'historial.usuario', 'waMensajes', 'tareas', 'fotos']);
         $mecanicos       = Usuario::where('rol', 'mecanico')->where('activo', true)->orderBy('nombre')->get();
         $transiciones    = Orden::TRANSICIONES[$orden->estado] ?? [];
+        $servicios       = \App\Models\Servicio::activos()->orderBy('nombre')->get();
+        $guardados       = \App\Models\WaMensajeGuardado::activos()->orderBy('nombre')->get();
 
-        return view('ordenes.show', compact('orden', 'mecanicos', 'transiciones'));
+        return view('ordenes.show', compact('orden', 'mecanicos', 'transiciones', 'servicios', 'guardados'));
+    }
+
+    public function moverColumna(Request $request, Orden $orden)
+    {
+        $request->validate(['estado' => ['required', 'string']]);
+
+        // Un mecánico solo puede mover sus propias órdenes
+        if (auth()->user()->rol === 'mecanico' && $orden->mecanico_id !== auth()->id()) {
+            return response()->json(['ok' => false, 'error' => 'Sin permiso'], 403);
+        }
+
+        try {
+            $this->ordenService->moverATablero($orden, $request->estado, auth()->user());
+            return response()->json(['ok' => true]);
+        } catch (\InvalidArgumentException $e) {
+            return response()->json(['ok' => false, 'error' => $e->getMessage()], 422);
+        }
+    }
+
+    public function cotizacionPdf(Orden $orden)
+    {
+        $orden->load(['vehiculo.cliente', 'items']);
+
+        $servicios = $orden->items->where('tipo', 'mano_obra');
+        $repuestos = $orden->items->where('tipo', 'repuesto');
+        $negocio   = \App\Models\NegocioConfig::instancia();
+
+        $pdf = Pdf::loadView('ordenes.pdf.cotizacion', compact('orden', 'servicios', 'repuestos', 'negocio'));
+
+        return $pdf->download("cotizacion-{$orden->numero}.pdf");
     }
 
     public function cambiarEstado(Request $request, Orden $orden): RedirectResponse

@@ -69,7 +69,7 @@ class VehiculoController extends Controller
 
     public function destroy(Vehiculo $vehiculo): RedirectResponse
     {
-        if ($vehiculo->ordenes()->whereNotIn('estado', ['entregada', 'cancelada'])->exists()) {
+        if ($vehiculo->ordenes()->whereNotIn('estado', ['entregado', 'cancelado'])->exists()) {
             return back()->with('error', 'No se puede desactivar un vehículo con órdenes abiertas.');
         }
 

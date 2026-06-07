@@ -2,14 +2,14 @@
 @section('title', 'Log de Mensajes WA')
 
 @section('content')
-<h1 class="text-xl font-bold text-gray-900 mb-6">Mensajes WhatsApp</h1>
+@include('whatsapp._nav')
 
-<form method="GET" class="mb-4 flex gap-2">
+<form method="GET" class="mb-4 flex flex-wrap gap-2">
     <select name="tipo" class="border rounded-lg px-3 py-2 text-sm">
         <option value="">Todos los tipos</option>
-        <option value="presupuesto" {{ request('tipo') === 'presupuesto' ? 'selected' : '' }}>Presupuesto</option>
-        <option value="recepcion" {{ request('tipo') === 'recepcion' ? 'selected' : '' }}>Recepción</option>
-        <option value="recordatorio" {{ request('tipo') === 'recordatorio' ? 'selected' : '' }}>Recordatorio</option>
+        @foreach(['presupuesto'=>'Presupuesto','recepcion'=>'Recepción','reparacion'=>'En reparación','listo'=>'Listo','entregado'=>'Entregado','recordatorio'=>'Recordatorio','manual'=>'Manual'] as $val => $label)
+        <option value="{{ $val }}" {{ request('tipo') === $val ? 'selected' : '' }}>{{ $label }}</option>
+        @endforeach
     </select>
     <select name="estado_entrega" class="border rounded-lg px-3 py-2 text-sm">
         <option value="">Todos los estados</option>

@@ -17,13 +17,13 @@ return new class extends Migration
             $table->unsignedInteger('km_ingreso')->nullable();
             $table->text('descripcion')->nullable();
             $table->enum('estado', [
-                'presupuesto',
-                'aprobada',
-                'en_proceso',
-                'finalizada',
-                'entregada',
-                'cancelada',
-            ])->default('presupuesto');
+                'recepcion',
+                'cotizacion',
+                'reparacion',
+                'listo',
+                'entregado',
+                'cancelado',
+            ])->default('recepcion');
             $table->decimal('total_estimado', 10, 2)->default(0);
             $table->timestamps();
 
