@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\MercadoPagoWebhookController;
 use App\Http\Controllers\Api\RecordatorioController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
@@ -8,6 +9,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('/webhook/evolution', [WebhookController::class, 'evolution'])
     ->middleware('evolution.webhook')
     ->name('webhook.evolution');
+
+// Webhook de MercadoPago
+Route::post('/webhook/mercadopago', MercadoPagoWebhookController::class)
+    ->name('webhook.mercadopago');
 
 // Endpoints para n8n — token estático en env RECORDATORIO_TOKEN
 Route::middleware('recordatorio.token')->group(function () {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'TallerFácil') — TallerFácil</title>
+    <title>@yield('title', 'TallerFácil') — {{ $tallerActual->nombre ?? 'TallerFácil' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>[x-cloak]{display:none!important}</style>
 </head>
@@ -13,7 +13,7 @@
 <nav class="bg-gray-900 text-white">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
         <div class="flex items-center gap-6">
-            <a href="{{ route('ordenes.index') }}" class="font-bold text-lg tracking-tight">🔧 TallerFácil</a>
+            <a href="{{ route('ordenes.index') }}" class="font-bold text-lg tracking-tight">🔧 {{ $tallerActual->nombre ?? 'TallerFácil' }}</a>
             <div class="hidden md:flex gap-1 text-sm">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors hover:bg-gray-800 hover:text-yellow-400 {{ request()->routeIs('dashboard') ? 'text-yellow-400 bg-gray-800' : 'text-gray-300' }}">
                     <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: {{ request()->routeIs('dashboard') ? '#facc15' : '#a78bfa' }}">

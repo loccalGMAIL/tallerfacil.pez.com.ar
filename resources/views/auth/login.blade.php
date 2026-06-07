@@ -111,6 +111,18 @@
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
         </form>
+
+        @if(session('status'))
+        <div class="mt-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm">
+            {{ session('status') }}
+        </div>
+        @endif
+
+        <div class="mt-5 text-center">
+            <a href="{{ route('password.request') }}" class="text-sm text-gray-400 hover:text-gray-600 transition-colors">
+                ¿Olvidaste tu contraseña?
+            </a>
+        </div>
     </div>
 </div>
 

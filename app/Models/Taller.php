@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Taller extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'nombre',
         'razon_social',
@@ -59,5 +62,13 @@ class Taller extends Model
     public function tieneSuscripcionActiva(): bool
     {
         return $this->suscripcionActual?->estaActiva() ?? false;
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['nombre', 'subdominio', 'activo'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

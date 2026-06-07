@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NegocioConfig;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -11,7 +10,7 @@ class NegocioController extends Controller
 {
     public function edit(): View
     {
-        return view('configuracion.negocio', ['negocio' => NegocioConfig::instancia()]);
+        return view('configuracion.negocio', ['negocio' => app('taller.actual')]);
     }
 
     public function update(Request $request): RedirectResponse
@@ -27,8 +26,9 @@ class NegocioController extends Controller
             'notas'        => ['nullable', 'string'],
         ], ['nombre.required' => 'El nombre del taller es obligatorio.']);
 
-        NegocioConfig::instancia()->update($datos);
+        app('taller.actual')->update($datos);
 
         return back()->with('success', 'Datos del negocio guardados.');
     }
 }
+

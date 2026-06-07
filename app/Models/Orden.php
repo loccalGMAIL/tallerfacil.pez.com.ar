@@ -6,10 +6,12 @@ use App\Models\Concerns\BelongsToTaller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Orden extends Model
 {
-    use BelongsToTaller;
+    use BelongsToTaller, LogsActivity;
 
     protected $table = 'ordenes';
 
@@ -60,6 +62,14 @@ class Orden extends Model
         'entregado'  => 'bg-green-700 text-white',
         'cancelado'  => 'bg-red-100 text-red-700',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['estado', 'mecanico_id', 'total_estimado'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     public function estadoLabel(): string
     {

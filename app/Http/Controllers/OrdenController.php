@@ -89,7 +89,7 @@ class OrdenController extends Controller
 
         $servicios = $orden->items->where('tipo', 'mano_obra');
         $repuestos = $orden->items->where('tipo', 'repuesto');
-        $negocio   = \App\Models\NegocioConfig::instancia();
+        $negocio   = app('taller.actual');
 
         $pdf = Pdf::loadView('ordenes.pdf.cotizacion', compact('orden', 'servicios', 'repuestos', 'negocio'));
 

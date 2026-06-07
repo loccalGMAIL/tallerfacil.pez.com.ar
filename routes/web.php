@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\OrdenController;
@@ -65,10 +68,23 @@ Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
+// Recuperación de contraseña (sin subdominio de taller)
+Route::get('/forgot-password', [ForgotPasswordController::class, 'show'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'send'])->name('password.email');
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'show'])->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'update'])->name('password.update');
+
 // ============================================================
 // Panel de taller — aplica el middleware de tenant
 // ============================================================
 Route::middleware(['taller'])->group(function () {
+
+    // Suscripción — sin auth estricta (para ver el estado aunque esté vencida)
+    Route::middleware(['auth'])->prefix('suscripcion')->name('suscripcion.')->group(function () {
+        Route::get('/', [SuscripcionController::class, 'index'])->name('index');
+        Route::post('/checkout', [SuscripcionController::class, 'iniciarCheckout'])->name('checkout');
+        Route::get('/retorno', [SuscripcionController::class, 'retorno'])->name('retorno');
+    });
 
     // Panel principal — requiere autenticación
     Route::middleware(['auth', 'suscripcion.activa'])->group(function () {
