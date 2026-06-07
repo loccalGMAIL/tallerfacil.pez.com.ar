@@ -12,12 +12,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('orden_id')->constrained('ordenes');
             $table->enum('estado', [
-                'presupuesto',
-                'aprobada',
-                'en_proceso',
-                'finalizada',
-                'entregada',
-                'cancelada',
+                'recepcion',
+                'cotizacion',
+                'reparacion',
+                'listo',
+                'entregado',
+                'cancelado',
             ]);
             $table->foreignId('usuario_id')->nullable()->constrained('usuarios');
             $table->string('notas', 255)->nullable();

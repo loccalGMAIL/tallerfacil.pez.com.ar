@@ -12,7 +12,7 @@
         @csrf @method('PUT')
         <input type="hidden" name="cliente_id" value="{{ $vehiculo->cliente_id }}">
 
-        <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Patente <span class="text-red-500">*</span></label>
                 <input type="text" name="patente" value="{{ old('patente', $vehiculo->patente) }}"
@@ -59,15 +59,15 @@
                 <input type="number" name="km_ultimo_service" value="{{ old('km_ultimo_service', $vehiculo->km_ultimo_service) }}"
                     class="w-full border rounded-lg px-3 py-2 text-sm">
             </div>
-            <div class="col-span-2">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Notas</label>
                 <textarea name="notas" rows="2" class="w-full border rounded-lg px-3 py-2 text-sm">{{ old('notas', $vehiculo->notas) }}</textarea>
             </div>
         </div>
 
-        <div class="flex gap-3">
-            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg text-sm font-medium">Guardar</button>
-            <a href="{{ route('vehiculos.show', $vehiculo) }}" class="text-gray-600 px-4 py-2 text-sm">Cancelar</a>
+        <div class="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
+            <button type="submit" class="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium">Guardar</button>
+            <a href="{{ route('vehiculos.show', $vehiculo) }}" class="w-full sm:w-auto text-center text-gray-600 hover:text-gray-800 px-4 py-2.5 text-sm">Cancelar</a>
         </div>
     </form>
 </div>

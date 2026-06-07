@@ -2,8 +2,8 @@
 @section('title', $cliente->nombre)
 
 @section('content')
-<div class="flex items-center justify-between mb-6">
-    <div class="flex items-center gap-3">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+    <div class="flex items-center gap-3 flex-wrap">
         <a href="{{ route('clientes.index') }}" class="text-gray-500 hover:text-gray-700 text-sm">← Clientes</a>
         <h1 class="text-xl font-bold text-gray-900">{{ $cliente->nombre }}</h1>
         @unless($cliente->activo)
@@ -11,7 +11,7 @@
         @endunless
     </div>
     @if(auth()->user()->esAdministrador())
-    <div class="flex gap-2">
+    <div class="flex flex-wrap gap-2">
         <a href="{{ route('vehiculos.create', ['cliente_id' => $cliente->id]) }}" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm">
             + Vehículo
         </a>
@@ -28,9 +28,9 @@
     @endif
 </div>
 
-<div class="grid grid-cols-3 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     {{-- Datos del cliente --}}
-    <div class="col-span-1 bg-white rounded-xl shadow p-5">
+    <div class="lg:col-span-1 bg-white rounded-xl shadow p-5">
         <h2 class="font-semibold text-gray-700 mb-3 text-sm uppercase tracking-wide">Datos</h2>
         <dl class="space-y-2 text-sm">
             <div><dt class="text-gray-500">Documento</dt><dd>{{ $cliente->tipo_doc }}: {{ $cliente->nro_doc ?? '—' }}</dd></div>
@@ -48,20 +48,20 @@
     </div>
 
     {{-- Vehículos --}}
-    <div class="col-span-2 space-y-4">
+    <div class="lg:col-span-2 space-y-4">
         <div class="bg-white rounded-xl shadow p-5">
             <h2 class="font-semibold text-gray-700 mb-3 text-sm uppercase tracking-wide">
                 Vehículos ({{ $vehiculos->count() }})
             </h2>
             @forelse($vehiculos as $vehiculo)
-            <div class="flex items-center justify-between py-2 border-b last:border-0">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2 border-b last:border-0">
                 <div>
                     <a href="{{ route('vehiculos.show', $vehiculo) }}" class="font-medium text-gray-800 hover:text-yellow-600">
                         {{ $vehiculo->patente }}
                     </a>
                     <span class="text-gray-500 text-sm ml-2">{{ $vehiculo->marca }} {{ $vehiculo->modelo }} {{ $vehiculo->anio }}</span>
                 </div>
-                <div class="flex gap-3 text-xs text-gray-500">
+                <div class="flex flex-wrap gap-3 text-xs text-gray-500">
                     @if($vehiculo->km_actual)
                     <span>{{ number_format($vehiculo->km_actual) }} km</span>
                     @endif

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('wa_plantillas', function (Blueprint $table) {
             $table->id();
-            $table->enum('tipo', ['presupuesto', 'recepcion', 'recordatorio'])->unique();
+            $table->enum('tipo', ['presupuesto', 'recepcion', 'recordatorio', 'listo', 'reparacion', 'entregado'])->unique();
             $table->text('texto');
             $table->boolean('activo')->default(true);
             $table->timestamps();

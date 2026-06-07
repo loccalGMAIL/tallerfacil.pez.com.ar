@@ -2,9 +2,9 @@
 @section('title', 'WhatsApp — Conexión')
 
 @section('content')
-<h1 class="text-xl font-bold text-gray-900 mb-6">WhatsApp — Conexión</h1>
+@include('whatsapp._nav')
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {{-- Estado de conexión + QR --}}
     <div class="bg-white rounded-xl shadow p-5" x-data="{ qr: null, loading: false, error: '' }">
         <h2 class="font-semibold text-gray-700 mb-4">Estado de la sesión</h2>

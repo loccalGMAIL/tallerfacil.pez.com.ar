@@ -11,12 +11,15 @@ return new class extends Migration
         Schema::create('wa_recordatorio_config', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('umbral_meses')->nullable()->default(6);
-            $table->unsignedInteger('umbral_km')->nullable()->default(10000);
             $table->unsignedSmallInteger('ventana_minima_dias')->default(30);
             $table->boolean('activo')->default(true);
             $table->unsignedSmallInteger('tope_diario')->default(50);
             $table->unsignedSmallInteger('delay_min_seg')->default(30);
             $table->unsignedSmallInteger('delay_max_seg')->default(90);
+            $table->boolean('auto_recepcion')->default(false);
+            $table->boolean('auto_reparacion')->default(false);
+            $table->boolean('auto_listo')->default(false);
+            $table->boolean('auto_entregado')->default(false);
             $table->timestamp('updated_at')->nullable();
         });
     }

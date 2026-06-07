@@ -31,6 +31,27 @@ class WaPlantillasSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'tipo'       => 'reparacion',
+                'texto'      => "Hola {nombre} 👋\n\nYa empezamos a trabajar en tu *{marca} {modelo}* (patente *{patente}*).\n\n📋 Orden N°: *{numero_orden}*\n\nTe avisamos apenas esté listo. ¡Saludos! 🔧",
+                'activo'     => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'tipo'       => 'listo',
+                'texto'      => "¡Hola {nombre}! 🎉\n\nTu *{marca} {modelo}* (patente *{patente}*) ya está *listo para retirar*.\n\n📋 Orden N°: *{numero_orden}*\n💰 Total: *\${total}*\n\nTe esperamos. ¡Gracias por confiar en nosotros! 🔧",
+                'activo'     => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'tipo'       => 'entregado',
+                'texto'      => "Hola {nombre} 🙌\n\n¡Gracias por elegirnos para el service de tu *{marca} {modelo}*!\n\nCualquier cosa que necesites, estamos a disposición. Si te gustó la atención, nos ayudaría muchísimo que nos recomiendes. ¡Buenos kilómetros! 🚗",
+                'activo'     => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ];
 
         foreach ($plantillas as $plantilla) {

@@ -12,9 +12,9 @@
     <form method="POST" action="{{ route('vehiculos.store') }}">
         @csrf
 
-        <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             @if(!$cliente)
-            <div class="col-span-2">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Cliente <span class="text-red-500">*</span></label>
                 <select name="cliente_id" class="w-full border rounded-lg px-3 py-2 text-sm @error('cliente_id') border-red-400 @enderror">
                     <option value="">— Seleccionar cliente —</option>
@@ -89,18 +89,18 @@
                     class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="75000">
             </div>
 
-            <div class="col-span-2">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Notas</label>
                 <textarea name="notas" rows="2" class="w-full border rounded-lg px-3 py-2 text-sm"
                     placeholder="Observaciones...">{{ old('notas') }}</textarea>
             </div>
         </div>
 
-        <div class="flex gap-3">
-            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg text-sm font-medium">
+        <div class="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
+            <button type="submit" class="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium">
                 Registrar vehículo
             </button>
-            <a href="{{ $cliente ? route('clientes.show', $cliente) : route('vehiculos.index') }}" class="text-gray-600 px-4 py-2 text-sm">Cancelar</a>
+            <a href="{{ $cliente ? route('clientes.show', $cliente) : route('vehiculos.index') }}" class="w-full sm:w-auto text-center text-gray-600 hover:text-gray-800 px-4 py-2.5 text-sm">Cancelar</a>
         </div>
     </form>
 </div>

@@ -11,8 +11,8 @@
     <form method="POST" action="{{ route('ordenes.store') }}">
         @csrf
 
-        <div class="grid grid-cols-2 gap-4 mb-4">
-            <div class="col-span-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Vehículo <span class="text-red-500">*</span></label>
                 <select name="vehiculo_id" class="w-full border rounded-lg px-3 py-2 text-sm @error('vehiculo_id') border-red-400 @enderror">
                     <option value="">— Seleccionar vehículo —</option>
@@ -49,18 +49,18 @@
             </div>
             @endif
 
-            <div class="col-span-2">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Descripción del problema</label>
                 <textarea name="descripcion" rows="3" class="w-full border rounded-lg px-3 py-2 text-sm"
                     placeholder="Síntoma reportado por el cliente...">{{ old('descripcion') }}</textarea>
             </div>
         </div>
 
-        <div class="flex gap-3">
-            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg text-sm font-medium">
+        <div class="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
+            <button type="submit" class="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium">
                 Crear orden
             </button>
-            <a href="{{ route('ordenes.index') }}" class="text-gray-600 px-4 py-2 text-sm">Cancelar</a>
+            <a href="{{ route('ordenes.index') }}" class="w-full sm:w-auto text-center text-gray-600 hover:text-gray-800 px-4 py-2.5 text-sm">Cancelar</a>
         </div>
     </form>
 </div>

@@ -11,8 +11,8 @@
     <form method="POST" action="{{ route('clientes.store') }}">
         @csrf
 
-        <div class="grid grid-cols-2 gap-4 mb-4">
-            <div class="col-span-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Nombre / Razón social <span class="text-red-500">*</span></label>
                 <input type="text" name="nombre" value="{{ old('nombre') }}"
                     class="w-full border rounded-lg px-3 py-2 text-sm @error('nombre') border-red-400 @enderror">
@@ -53,14 +53,14 @@
                 @error('email')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
 
-            <div class="col-span-2">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
                 <input type="text" name="direccion" value="{{ old('direccion') }}"
                     class="w-full border rounded-lg px-3 py-2 text-sm"
                     placeholder="Av. Corrientes 1234, CABA">
             </div>
 
-            <div class="col-span-2">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Notas</label>
                 <textarea name="notas" rows="3"
                     class="w-full border rounded-lg px-3 py-2 text-sm"
@@ -68,11 +68,11 @@
             </div>
         </div>
 
-        <div class="flex gap-3">
-            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg text-sm font-medium">
+        <div class="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
+            <button type="submit" class="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium">
                 Guardar cliente
             </button>
-            <a href="{{ route('clientes.index') }}" class="text-gray-600 hover:text-gray-800 px-4 py-2 text-sm">Cancelar</a>
+            <a href="{{ route('clientes.index') }}" class="w-full sm:w-auto text-center text-gray-600 hover:text-gray-800 px-4 py-2.5 text-sm">Cancelar</a>
         </div>
     </form>
 </div>

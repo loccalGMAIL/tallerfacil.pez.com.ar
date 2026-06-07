@@ -6,6 +6,7 @@ use App\Models\Orden;
 use App\Models\WaConfig;
 use App\Models\WaMensaje;
 use App\Models\WaPlantilla;
+use App\Models\WaMensajeGuardado;
 use App\Models\WaRecordatorioConfig;
 use App\Services\EvolutionApiService;
 use App\Services\WhatsAppService;
@@ -39,6 +40,34 @@ class WhatsAppController extends Controller
     {
         try {
             $mensaje = $this->whatsApp->enviarRecepcion($orden);
+
+            return response()->json(['ok' => true, 'wa_mensaje_id' => $mensaje->id]);
+        } catch (Exception $e) {
+            return response()->json(['ok' => false, 'error' => $e->getMessage()], 422);
+        }
+    }
+
+    public function enviarEvento(Orden $orden, string $tipo): JsonResponse
+    {
+        if (!in_array($tipo, WhatsAppService::TIPOS_EVENTO)) {
+            return response()->json(['ok' => false, 'error' => 'Tipo de evento inválido.'], 422);
+        }
+
+        try {
+            $mensaje = $this->whatsApp->enviarEvento($orden, $tipo);
+
+            return response()->json(['ok' => true, 'wa_mensaje_id' => $mensaje->id]);
+        } catch (Exception $e) {
+            return response()->json(['ok' => false, 'error' => $e->getMessage()], 422);
+        }
+    }
+
+    public function enviarManual(Request $request, Orden $orden): JsonResponse
+    {
+        $request->validate(['texto' => ['required', 'string', 'max:2000']]);
+
+        try {
+            $mensaje = $this->whatsApp->enviarManual($orden, $request->texto);
 
             return response()->json(['ok' => true, 'wa_mensaje_id' => $mensaje->id]);
         } catch (Exception $e) {
@@ -133,13 +162,21 @@ class WhatsAppController extends Controller
     {
         $datos = $request->validate([
             'umbral_meses'        => ['nullable', 'integer', 'min:1'],
-            'umbral_km'           => ['nullable', 'integer', 'min:100'],
             'ventana_minima_dias' => ['required', 'integer', 'min:1'],
             'activo'              => ['required', 'boolean'],
             'tope_diario'         => ['required', 'integer', 'min:1', 'max:500'],
             'delay_min_seg'       => ['required', 'integer', 'min:5'],
             'delay_max_seg'       => ['required', 'integer', 'min:10'],
+            'auto_recepcion'      => ['nullable', 'boolean'],
+            'auto_reparacion'     => ['nullable', 'boolean'],
+            'auto_listo'          => ['nullable', 'boolean'],
+            'auto_entregado'      => ['nullable', 'boolean'],
         ]);
+
+        // Checkboxes ausentes = false
+        foreach (['auto_recepcion', 'auto_reparacion', 'auto_listo', 'auto_entregado'] as $flag) {
+            $datos[$flag] = $request->boolean($flag);
+        }
 
         WaRecordatorioConfig::updateOrCreate(['id' => 1], array_merge($datos, ['updated_at' => now()]));
 
@@ -151,8 +188,9 @@ class WhatsAppController extends Controller
     public function plantillas(): View
     {
         $plantillas = WaPlantilla::orderBy('tipo')->get();
+        $guardados  = WaMensajeGuardado::orderBy('nombre')->get();
 
-        return view('whatsapp.plantillas', compact('plantillas'));
+        return view('whatsapp.plantillas', compact('plantillas', 'guardados'));
     }
 
     public function updatePlantilla(Request $request, WaPlantilla $plantilla): RedirectResponse
@@ -165,5 +203,38 @@ class WhatsAppController extends Controller
         $plantilla->update($request->only('texto', 'activo'));
 
         return back()->with('success', 'Plantilla actualizada.');
+    }
+
+    // ── Mensajes guardados (biblioteca personalizada) ────────
+
+    public function storeGuardado(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'nombre' => ['required', 'string', 'max:100'],
+            'texto'  => ['required', 'string', 'max:2000'],
+        ]);
+
+        WaMensajeGuardado::create($request->only('nombre', 'texto') + ['activo' => true]);
+
+        return back()->with('success', 'Mensaje guardado.');
+    }
+
+    public function updateGuardado(Request $request, WaMensajeGuardado $guardado): RedirectResponse
+    {
+        $request->validate([
+            'nombre' => ['required', 'string', 'max:100'],
+            'texto'  => ['required', 'string', 'max:2000'],
+        ]);
+
+        $guardado->update($request->only('nombre', 'texto') + ['activo' => $request->boolean('activo')]);
+
+        return back()->with('success', 'Mensaje actualizado.');
+    }
+
+    public function destroyGuardado(WaMensajeGuardado $guardado): RedirectResponse
+    {
+        $guardado->delete();
+
+        return back()->with('success', 'Mensaje eliminado.');
     }
 }
