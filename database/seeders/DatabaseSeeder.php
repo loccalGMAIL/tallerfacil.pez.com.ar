@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             WaPlantillasSeeder::class,
             WaConfigSeeder::class,
             WaRecordatorioConfigSeeder::class,
+            DemoSeeder::class,
         ]);
     }
 }
