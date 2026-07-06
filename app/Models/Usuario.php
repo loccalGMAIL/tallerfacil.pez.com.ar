@@ -12,9 +12,9 @@ class Usuario extends Authenticatable
 
     protected $table = 'usuarios';
 
-    protected $fillable = ['nombre', 'email', 'password', 'rol', 'activo'];
+    protected $fillable = ['nombre', 'email', 'password', 'rol', 'activo', 'google_id', 'google_avatar'];
 
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'google_id'];
 
     protected function casts(): array
     {
@@ -27,6 +27,11 @@ class Usuario extends Authenticatable
     public function esAdministrador(): bool
     {
         return $this->rol === 'administrador';
+    }
+
+    public function tieneGoogle(): bool
+    {
+        return ! is_null($this->google_id);
     }
 
     public function ordenes(): HasMany

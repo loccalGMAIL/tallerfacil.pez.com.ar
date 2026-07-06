@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\VehiculoController;
@@ -13,12 +14,21 @@ use App\Http\Controllers\RecepcionController;
 use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\InvitacionController;
 use Illuminate\Support\Facades\Route;
 
 // Auth
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
+// Google OAuth
+Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('auth.google');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('auth.google.callback');
+
+// Invitaciones — registro (rutas públicas)
+Route::get('/invitacion/{token}', [InvitacionController::class, 'show'])->name('invitacion.show');
+Route::post('/invitacion/{token}', [InvitacionController::class, 'register'])->name('invitacion.register');
 
 // Panel principal — requiere autenticación
 Route::middleware('auth')->group(function () {
@@ -110,6 +120,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/personal', [PersonalController::class, 'store'])->name('personal.store');
             Route::put('/personal/{usuario}', [PersonalController::class, 'update'])->name('personal.update');
             Route::delete('/personal/{usuario}', [PersonalController::class, 'destroy'])->name('personal.destroy');
+
+            // Invitaciones — gestión (admin)
+            Route::post('/personal/invitacion', [InvitacionController::class, 'store'])->name('personal.invitacion.store');
+            Route::delete('/invitaciones/{invitacion}', [InvitacionController::class, 'destroy'])->name('personal.invitacion.destroy');
         });
     });
 });
