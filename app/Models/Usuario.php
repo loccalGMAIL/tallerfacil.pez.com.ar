@@ -13,9 +13,9 @@ class Usuario extends Authenticatable
 
     protected $table = 'usuarios';
 
-    protected $fillable = ['nombre', 'email', 'password', 'rol', 'activo', 'taller_id'];
+    protected $fillable = ['nombre', 'email', 'password', 'rol', 'activo', 'taller_id', 'google_id', 'google_avatar'];
 
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'google_id'];
 
     protected function casts(): array
     {
@@ -33,6 +33,11 @@ class Usuario extends Authenticatable
     public function esSuperAdmin(): bool
     {
         return $this->rol === 'superadmin';
+    }
+
+    public function tieneGoogle(): bool
+    {
+        return ! is_null($this->google_id);
     }
 
     public function ordenes(): HasMany
