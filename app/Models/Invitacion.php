@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTaller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Invitacion extends Model
 {
+    use BelongsToTaller;
+
     protected $table = 'invitaciones';
 
-    protected $fillable = ['token', 'email', 'nombre', 'rol', 'expires_at', 'used_at', 'created_by'];
+    protected $fillable = ['token', 'email', 'nombre', 'rol', 'expires_at', 'used_at', 'created_by', 'taller_id'];
 
     protected function casts(): array
     {

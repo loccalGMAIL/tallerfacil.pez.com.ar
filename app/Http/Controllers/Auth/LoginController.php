@@ -22,10 +22,45 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'], 'activo' => true], $request->boolean('remember'))) {
-            $request->session()->regenerate();
+        $esPanelAdmin = str_starts_with($request->getHost(), 'admin.');
 
-            return redirect()->intended(route('ordenes.index'));
+        if ($esPanelAdmin) {
+            // Solo superadmin puede ingresar al panel de administración
+            if (Auth::attempt([
+                'email'    => $credentials['email'],
+                'password' => $credentials['password'],
+                'rol'      => 'superadmin',
+                'activo'   => true,
+            ], $request->boolean('remember'))) {
+                $request->session()->regenerate();
+                return redirect()->route('superadmin.dashboard');
+            }
+        } elseif (app()->bound('taller.actual')) {
+            // Login del taller: valida que el usuario pertenezca a este taller
+            $taller = app('taller.actual');
+            if (Auth::attempt([
+                'email'     => $credentials['email'],
+                'password'  => $credentials['password'],
+                'taller_id' => $taller->id,
+                'activo'    => true,
+            ], $request->boolean('remember'))) {
+                $request->session()->regenerate();
+                return redirect()->intended(route('ordenes.index'));
+            }
+        } else {
+            // Fallback para entornos de desarrollo sin subdominio
+            if (Auth::attempt([
+                'email'    => $credentials['email'],
+                'password' => $credentials['password'],
+                'activo'   => true,
+            ], $request->boolean('remember'))) {
+                $request->session()->regenerate();
+                $usuario = Auth::user();
+                if ($usuario->esSuperAdmin()) {
+                    return redirect()->route('superadmin.dashboard');
+                }
+                return redirect()->intended(route('ordenes.index'));
+            }
         }
 
         return back()->withErrors([

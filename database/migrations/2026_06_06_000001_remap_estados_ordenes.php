@@ -25,6 +25,12 @@ return new class extends Migration
 
     public function up(): void
     {
+        // MySQL: los enums se modifican con ALTER TABLE MODIFY COLUMN.
+        // SQLite no soporta enums nativos; se omite en ese driver.
+        if (DB::getDriverName() !== 'mysql') {
+            return;
+        }
+
         // 1) Ampliar ambos enums al union (viejos + nuevos) para poder migrar sin perder filas
         $union = $this->enumList(array_merge($this->estadosViejos, $this->estadosNuevos));
         DB::statement("ALTER TABLE ordenes MODIFY COLUMN estado ENUM($union) NOT NULL DEFAULT 'presupuesto'");
@@ -44,6 +50,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (DB::getDriverName() !== 'mysql') {
+            return;
+        }
+
         // Ampliar al union
         $union = $this->enumList(array_merge($this->estadosViejos, $this->estadosNuevos));
         DB::statement("ALTER TABLE ordenes MODIFY COLUMN estado ENUM($union) NOT NULL DEFAULT 'recepcion'");

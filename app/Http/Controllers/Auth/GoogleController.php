@@ -64,7 +64,7 @@ class GoogleController extends Controller
             Auth::login($usuario);
             $request->session()->regenerate();
 
-            return redirect()->intended(route('ordenes.index'));
+            return $this->redirectSegunRol($usuario);
         }
 
         // CASO B — email existente sin google_id
@@ -83,7 +83,7 @@ class GoogleController extends Controller
             Auth::login($usuario);
             $request->session()->regenerate();
 
-            return redirect()->intended(route('ordenes.index'));
+            return $this->redirectSegunRol($usuario);
         }
 
         // CASO C — no existe: verificar token de invitación en state
@@ -101,6 +101,7 @@ class GoogleController extends Controller
                     'password'      => null,
                     'google_id'     => $googleUser->getId(),
                     'google_avatar' => $googleUser->getAvatar(),
+                    'taller_id'     => $invitacion->taller_id,
                 ]);
 
                 $invitacion->update(['used_at' => now()]);
@@ -114,5 +115,14 @@ class GoogleController extends Controller
 
         // CASO D — sin invitación válida
         return redirect()->route('login')->withErrors(['email' => 'No tenés acceso. Pedí una invitación al administrador.']);
+    }
+
+    private function redirectSegunRol(Usuario $usuario): RedirectResponse
+    {
+        if ($usuario->esSuperAdmin()) {
+            return redirect()->route('superadmin.dashboard');
+        }
+
+        return redirect()->intended(route('ordenes.index'));
     }
 }

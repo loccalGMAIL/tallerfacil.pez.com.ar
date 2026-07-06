@@ -17,6 +17,7 @@ return new class extends Migration
             $table->timestamp('expires_at');
             $table->timestamp('used_at')->nullable();
             $table->foreignId('created_by')->constrained('usuarios')->cascadeOnDelete();
+            $table->foreignId('taller_id')->nullable()->constrained('talleres')->cascadeOnDelete();
             $table->timestamps();
         });
     }

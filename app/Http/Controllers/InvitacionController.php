@@ -30,6 +30,7 @@ class InvitacionController extends Controller
             'rol'        => $request->rol,
             'expires_at' => now()->addDays(7),
             'created_by' => Auth::id(),
+            'taller_id'  => Auth::user()->taller_id,
         ]);
 
         $link = route('invitacion.show', $token);
@@ -65,11 +66,12 @@ class InvitacionController extends Controller
         ]);
 
         $usuario = Usuario::create([
-            'nombre'   => $invitacion->nombre,
-            'email'    => $invitacion->email,
-            'rol'      => $invitacion->rol,
-            'activo'   => true,
-            'password' => Hash::make($request->password),
+            'nombre'    => $invitacion->nombre,
+            'email'     => $invitacion->email,
+            'rol'       => $invitacion->rol,
+            'activo'    => true,
+            'password'  => Hash::make($request->password),
+            'taller_id' => $invitacion->taller_id,
         ]);
 
         $invitacion->update(['used_at' => now()]);

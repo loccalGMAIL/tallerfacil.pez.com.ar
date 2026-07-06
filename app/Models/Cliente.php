@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTaller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Cliente extends Model
 {
+    use BelongsToTaller;
+
     protected $fillable = [
         'nombre', 'tipo_doc', 'nro_doc', 'telefono_normalizado',
         'telefono_display', 'email', 'direccion', 'notas', 'activo',

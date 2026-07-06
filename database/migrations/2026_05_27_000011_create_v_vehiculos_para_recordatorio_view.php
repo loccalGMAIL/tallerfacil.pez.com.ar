@@ -7,6 +7,12 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // La vista usa funciones MySQL-específicas (TIMESTAMPDIFF, DATE_SUB).
+        // En SQLite (testing) se omite; la vista se crea solo en MySQL.
+        if (DB::getDriverName() !== 'mysql') {
+            return;
+        }
+
         DB::statement('DROP VIEW IF EXISTS v_vehiculos_para_recordatorio');
         DB::statement("
             CREATE VIEW v_vehiculos_para_recordatorio AS
@@ -48,6 +54,9 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (DB::getDriverName() !== 'mysql') {
+            return;
+        }
         DB::statement('DROP VIEW IF EXISTS v_vehiculos_para_recordatorio');
     }
 };

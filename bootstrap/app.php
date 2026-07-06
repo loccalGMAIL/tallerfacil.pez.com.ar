@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\EsSuperAdmin;
+use App\Http\Middleware\SetTallerActual;
 use App\Http\Middleware\ValidateEvolutionWebhook;
 use App\Http\Middleware\ValidateRecordatorioToken;
+use App\Http\Middleware\VerificarSuscripcionActiva;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role'               => CheckRole::class,
+            'taller'             => SetTallerActual::class,
+            'superadmin'         => EsSuperAdmin::class,
+            'suscripcion.activa' => VerificarSuscripcionActiva::class,
             'evolution.webhook'  => ValidateEvolutionWebhook::class,
             'recordatorio.token' => ValidateRecordatorioToken::class,
         ]);

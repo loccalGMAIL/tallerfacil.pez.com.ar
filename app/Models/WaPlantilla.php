@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTaller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WaPlantilla extends Model
 {
+    use BelongsToTaller;
+
     protected $table = 'wa_plantillas';
 
-    protected $fillable = ['tipo', 'texto', 'activo'];
+    protected $fillable = ['tipo', 'texto', 'activo', 'taller_id'];
 
     protected function casts(): array
     {

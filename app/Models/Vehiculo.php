@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTaller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Vehiculo extends Model
 {
+    use BelongsToTaller;
+
     protected $fillable = [
         'cliente_id', 'patente', 'marca', 'modelo', 'anio',
         'km_actual', 'combustible', 'fecha_ultimo_service',
