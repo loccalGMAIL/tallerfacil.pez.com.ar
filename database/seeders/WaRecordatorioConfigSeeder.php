@@ -12,7 +12,6 @@ class WaRecordatorioConfigSeeder extends Seeder
         DB::table('wa_recordatorio_config')->insertOrIgnore([
             'id'                  => 1,
             'umbral_meses'        => 6,
-            'umbral_km'           => 10000,
             'ventana_minima_dias' => 30,
             'activo'              => false,
             'tope_diario'         => 50,
