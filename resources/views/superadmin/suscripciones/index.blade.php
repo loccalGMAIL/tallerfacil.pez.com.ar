@@ -19,8 +19,8 @@
     <button type="submit" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-colors">Filtrar</button>
 </form>
 
-<div class="bg-gray-800 rounded-xl overflow-hidden">
-    <table class="w-full text-sm">
+<div class="bg-gray-800 rounded-xl overflow-hidden table-cards-wrap">
+    <table class="w-full text-sm table-cards dark-cards">
         <thead class="bg-gray-900 text-gray-400">
             <tr>
                 <th class="text-left px-4 py-3">Taller</th>
@@ -33,12 +33,12 @@
         <tbody class="divide-y divide-gray-700">
             @forelse($suscripciones as $sus)
             <tr>
-                <td class="px-4 py-3">
+                <td class="px-4 py-3" data-label="Taller">
                     <a href="{{ route('superadmin.talleres.show', $sus->taller) }}"
                        class="text-blue-400 hover:underline">{{ $sus->taller?->nombre ?? '—' }}</a>
                 </td>
-                <td class="px-4 py-3 text-gray-400">{{ ucfirst($sus->plan) }}</td>
-                <td class="px-4 py-3">
+                <td class="px-4 py-3 text-gray-400" data-label="Plan">{{ ucfirst($sus->plan) }}</td>
+                <td class="px-4 py-3" data-label="Estado">
                     <span class="text-xs px-2 py-0.5 rounded
                         {{ $sus->estado === 'activo' ? 'bg-green-900 text-green-300' : '' }}
                         {{ $sus->estado === 'prueba' ? 'bg-blue-900 text-blue-300' : '' }}
@@ -46,15 +46,15 @@
                         {{ $sus->estado === 'cancelado' ? 'bg-gray-700 text-gray-400' : '' }}
                     ">{{ ucfirst($sus->estado) }}</span>
                 </td>
-                <td class="px-4 py-3 text-gray-400">{{ $sus->fecha_vencimiento?->format('d/m/Y') ?? '—' }}</td>
-                <td class="px-4 py-3 text-right">
+                <td class="px-4 py-3 text-gray-400" data-label="Vencimiento">{{ $sus->fecha_vencimiento?->format('d/m/Y') ?? '—' }}</td>
+                <td class="px-4 py-3 text-right td-acciones">
                     <a href="{{ route('superadmin.suscripciones.show', $sus->taller) }}"
                        class="text-gray-400 hover:text-white text-xs">Gestionar →</a>
                 </td>
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="px-4 py-8 text-center text-gray-500">Sin suscripciones.</td>
+                <td colspan="5" class="px-4 py-8 text-center text-gray-500 td-vacio">Sin suscripciones.</td>
             </tr>
             @endforelse
         </tbody>

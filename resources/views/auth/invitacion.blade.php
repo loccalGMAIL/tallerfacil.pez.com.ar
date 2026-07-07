@@ -19,7 +19,10 @@
         <div class="relative">
             <div class="flex items-center gap-2 mb-12">
                 <span class="text-3xl">🔧</span>
-                <span class="text-xl font-bold tracking-tight">TallerFácil</span>
+                <div class="leading-tight">
+                    <span class="block text-xl font-bold tracking-tight">TallerFácil</span>
+                    <span class="text-[10px] text-gray-500 tracking-widest">v{{ config('app.version') }}</span>
+                </div>
             </div>
             <h2 class="text-3xl font-bold leading-tight mb-3">Te invitaron<br>al equipo</h2>
             <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
@@ -35,7 +38,10 @@
 
         <div class="lg:hidden flex items-center gap-2 mb-8">
             <span class="text-2xl">🔧</span>
-            <span class="text-lg font-bold text-gray-900">TallerFácil</span>
+            <div class="leading-tight">
+                <span class="block text-lg font-bold text-gray-900">TallerFácil</span>
+                <span class="text-[10px] text-gray-400 tracking-widest">v{{ config('app.version') }}</span>
+            </div>
         </div>
 
         @if($estado === 'usada')

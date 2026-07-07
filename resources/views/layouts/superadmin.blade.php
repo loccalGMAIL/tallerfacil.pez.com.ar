@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Panel Admin') — TallerFácil Admin</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#111827">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="TallerFácil">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>[x-cloak]{display:none!important}</style>
 </head>
@@ -13,8 +20,9 @@
 <nav class="bg-gray-900 border-b border-gray-800">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
         <div class="flex items-center gap-6">
-            <a href="{{ route('superadmin.dashboard') }}" class="font-bold text-lg tracking-tight text-yellow-400">
-                ⚙️ TallerFácil Admin
+            <a href="{{ route('superadmin.dashboard') }}" class="leading-none">
+                <span class="font-bold text-lg tracking-tight text-yellow-400">⚙️ TallerFácil Admin</span>
+                <span class="block text-[9px] text-gray-500 tracking-widest pl-7 mt-0.5">v{{ config('app.version') }}</span>
             </a>
             <div class="hidden md:flex gap-1 text-sm">
                 <a href="{{ route('superadmin.dashboard') }}"

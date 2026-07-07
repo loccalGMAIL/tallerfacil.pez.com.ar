@@ -23,8 +23,8 @@
     @endif
 </form>
 
-<div class="bg-white rounded-xl shadow overflow-hidden">
-    <table class="w-full text-sm">
+<div class="bg-white rounded-xl shadow overflow-hidden table-cards-wrap">
+    <table class="w-full text-sm table-cards">
         <thead class="bg-gray-50 border-b">
             <tr>
                 <th class="text-left px-4 py-3 font-medium text-gray-600">Fecha</th>
@@ -38,20 +38,20 @@
         <tbody class="divide-y divide-gray-100">
             @forelse($mensajes as $msg)
             <tr>
-                <td class="px-4 py-3 text-gray-500 whitespace-nowrap">{{ $msg->fecha_hora->format('d/m/Y H:i') }}</td>
-                <td class="px-4 py-3">
+                <td class="px-4 py-3 text-gray-500 whitespace-nowrap" data-label="Fecha">{{ $msg->fecha_hora->format('d/m/Y H:i') }}</td>
+                <td class="px-4 py-3" data-label="Cliente">
                     @if($msg->cliente)
                     <a href="{{ route('clientes.show', $msg->cliente) }}" class="hover:underline">{{ $msg->cliente->nombre }}</a>
                     @else —
                     @endif
                 </td>
-                <td class="px-4 py-3 capitalize">{{ $msg->tipo }}</td>
-                <td class="px-4 py-3">
+                <td class="px-4 py-3 capitalize" data-label="Tipo">{{ $msg->tipo }}</td>
+                <td class="px-4 py-3" data-label="Origen">
                     <span class="px-1.5 py-0.5 rounded text-xs {{ $msg->origen === 'n8n' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600' }}">
                         {{ $msg->origen }}
                     </span>
                 </td>
-                <td class="px-4 py-3">
+                <td class="px-4 py-3" data-label="Estado">
                     <span class="px-1.5 py-0.5 rounded text-xs {{ match($msg->estado_entrega) {
                         'leido' => 'bg-blue-100 text-blue-700',
                         'entregado' => 'bg-green-100 text-green-700',
@@ -63,10 +63,10 @@
                     <span class="text-red-400 text-xs ml-1" title="{{ $msg->error_detalle }}">⚠</span>
                     @endif
                 </td>
-                <td class="px-4 py-3 text-gray-600 max-w-xs truncate">{{ Str::limit($msg->contenido, 80) }}</td>
+                <td class="px-4 py-3 text-gray-600 max-w-xs truncate" data-label="Mensaje">{{ Str::limit($msg->contenido, 80) }}</td>
             </tr>
             @empty
-            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-400">Sin mensajes.</td></tr>
+            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-400 td-vacio">Sin mensajes.</td></tr>
             @endforelse
         </tbody>
     </table>

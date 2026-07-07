@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Version
+    |--------------------------------------------------------------------------
+    |
+    | Versión del sistema (semver). Fuente única de la versión: mantener en
+    | sincronía con el encabezado del CHANGELOG.md al publicar cada release.
+    |
+    */
+
+    'version' => '0.2.0',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

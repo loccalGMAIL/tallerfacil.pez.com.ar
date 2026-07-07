@@ -35,8 +35,8 @@
     @endif
 </form>
 
-<div class="bg-white rounded-xl shadow overflow-x-auto">
-    <table class="w-full text-sm min-w-[560px]">
+<div class="bg-white rounded-xl shadow overflow-x-auto table-cards-wrap">
+    <table class="w-full text-sm min-w-[560px] table-cards">
         <thead class="bg-gray-50 border-b">
             <tr>
                 <th class="text-left px-4 py-3 font-medium text-gray-600">N° Orden</th>
@@ -52,29 +52,29 @@
         <tbody class="divide-y divide-gray-100">
             @forelse($ordenes as $orden)
             <tr class="hover:bg-gray-50">
-                <td class="px-4 py-3 font-mono font-medium">
+                <td class="px-4 py-3 font-mono font-medium" data-label="N° Orden">
                     <a href="{{ route('ordenes.show', $orden) }}" class="hover:text-yellow-600">{{ $orden->numero }}</a>
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap">{{ $orden->vehiculo->patente }} <span class="text-gray-500">{{ $orden->vehiculo->marca }}</span></td>
-                <td class="px-4 py-3 hidden md:table-cell">
+                <td class="px-4 py-3 whitespace-nowrap" data-label="Vehículo">{{ $orden->vehiculo->patente }} <span class="text-gray-500">{{ $orden->vehiculo->marca }}</span></td>
+                <td class="px-4 py-3 hidden md:table-cell" data-label="Cliente">
                     <a href="{{ route('clientes.show', $orden->vehiculo->cliente) }}" class="hover:underline">
                         {{ $orden->vehiculo->cliente->nombre }}
                     </a>
                 </td>
-                <td class="px-4 py-3 text-gray-600 hidden lg:table-cell whitespace-nowrap">{{ $orden->fecha_ingreso->format('d/m/Y') }}</td>
-                <td class="px-4 py-3">
+                <td class="px-4 py-3 text-gray-600 hidden lg:table-cell whitespace-nowrap" data-label="Ingreso">{{ $orden->fecha_ingreso->format('d/m/Y') }}</td>
+                <td class="px-4 py-3" data-label="Estado">
                     <span class="px-2 py-0.5 rounded text-xs font-medium {{ $orden->estadoBadge() }}">
                         {{ $orden->estadoLabel() }}
                     </span>
                 </td>
-                <td class="px-4 py-3 font-medium whitespace-nowrap">${{ number_format($orden->total_estimado, 0, ',', '.') }}</td>
-                <td class="px-4 py-3 text-gray-600 hidden lg:table-cell">{{ $orden->mecanico?->nombre ?? '—' }}</td>
-                <td class="px-4 py-3 text-right">
+                <td class="px-4 py-3 font-medium whitespace-nowrap" data-label="Total">${{ number_format($orden->total_estimado, 0, ',', '.') }}</td>
+                <td class="px-4 py-3 text-gray-600 hidden lg:table-cell" data-label="Mecánico">{{ $orden->mecanico?->nombre ?? '—' }}</td>
+                <td class="px-4 py-3 text-right td-acciones">
                     <a href="{{ route('ordenes.show', $orden) }}" class="text-blue-600 hover:underline text-xs">Ver</a>
                 </td>
             </tr>
             @empty
-            <tr><td colspan="8" class="px-4 py-8 text-center text-gray-400">Sin órdenes.</td></tr>
+            <tr><td colspan="8" class="px-4 py-8 text-center text-gray-400 td-vacio">Sin órdenes.</td></tr>
             @endforelse
         </tbody>
     </table>

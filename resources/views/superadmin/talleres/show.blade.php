@@ -70,7 +70,7 @@
     @if($taller->usuarios->isEmpty())
         <p class="text-gray-500 text-sm">Sin usuarios.</p>
     @else
-    <table class="w-full text-sm">
+    <table class="w-full text-sm table-cards dark-cards">
         <thead class="text-gray-400">
             <tr>
                 <th class="text-left pb-2">Nombre</th>
@@ -82,10 +82,10 @@
         <tbody class="divide-y divide-gray-700">
             @foreach($taller->usuarios as $usuario)
             <tr>
-                <td class="py-2">{{ $usuario->nombre }}</td>
-                <td class="py-2 text-gray-400">{{ $usuario->email }}</td>
-                <td class="py-2 text-gray-400">{{ $usuario->rol }}</td>
-                <td class="py-2">
+                <td class="py-2" data-label="Nombre">{{ $usuario->nombre }}</td>
+                <td class="py-2 text-gray-400" data-label="Email">{{ $usuario->email }}</td>
+                <td class="py-2 text-gray-400" data-label="Rol">{{ $usuario->rol }}</td>
+                <td class="py-2" data-label="Estado">
                     <span class="{{ $usuario->activo ? 'text-green-400' : 'text-red-400' }}">
                         {{ $usuario->activo ? 'Activo' : 'Inactivo' }}
                     </span>
