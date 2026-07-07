@@ -122,15 +122,15 @@
                         <span class="text-gray-400 font-normal">({{ $grupo['items']->count() }})</span></h3>
                     <span class="text-sm font-medium text-gray-600">${{ number_format($grupo['items']->sum('subtotal'), 2, ',', '.') }}</span>
                 </div>
-                <table class="w-full text-sm">
+                <table class="w-full text-sm table-cards">
                     <tbody class="divide-y divide-gray-100">
                         @foreach($grupo['items'] as $item)
                         <tr>
-                            <td class="py-2">{{ $item->descripcion }}</td>
-                            <td class="py-2 text-right text-gray-500 whitespace-nowrap">${{ number_format($item->precio_unitario, 2, ',', '.') }} × {{ $item->cantidad }}</td>
-                            <td class="py-2 text-right font-medium whitespace-nowrap">${{ number_format($item->subtotal, 2, ',', '.') }}</td>
+                            <td class="py-2" data-label="Ítem">{{ $item->descripcion }}</td>
+                            <td class="py-2 text-right text-gray-500 whitespace-nowrap" data-label="Precio">${{ number_format($item->precio_unitario, 2, ',', '.') }} × {{ $item->cantidad }}</td>
+                            <td class="py-2 text-right font-medium whitespace-nowrap" data-label="Subtotal">${{ number_format($item->subtotal, 2, ',', '.') }}</td>
                             @if($orden->estaAbierta())
-                            <td class="py-2 text-right pl-2">
+                            <td class="py-2 text-right pl-2 td-acciones">
                                 <form method="POST" action="{{ route('ordenes.items.destroy', [$orden, $item]) }}"
                                     onsubmit="return confirm('¿Eliminar este ítem?')">
                                     @csrf @method('DELETE')

@@ -24,8 +24,8 @@
     </div>
 </form>
 
-<div class="bg-white rounded-xl shadow overflow-x-auto">
-    <table class="w-full text-sm min-w-[480px]">
+<div class="bg-white rounded-xl shadow overflow-x-auto table-cards-wrap">
+    <table class="w-full text-sm min-w-[480px] table-cards">
         <thead class="bg-gray-50 border-b">
             <tr>
                 <th class="text-left px-4 py-3 font-medium text-gray-600">Patente</th>
@@ -39,21 +39,21 @@
         <tbody class="divide-y divide-gray-100">
             @forelse($vehiculos as $vehiculo)
             <tr class="hover:bg-gray-50">
-                <td class="px-4 py-3 font-mono font-medium">
+                <td class="px-4 py-3 font-mono font-medium" data-label="Patente">
                     <a href="{{ route('vehiculos.show', $vehiculo) }}" class="hover:text-yellow-600">{{ $vehiculo->patente }}</a>
                 </td>
-                <td class="px-4 py-3">{{ $vehiculo->marca }} {{ $vehiculo->modelo }} <span class="text-gray-400">{{ $vehiculo->anio }}</span></td>
-                <td class="px-4 py-3 hidden sm:table-cell">
+                <td class="px-4 py-3" data-label="Marca / Modelo">{{ $vehiculo->marca }} {{ $vehiculo->modelo }} <span class="text-gray-400">{{ $vehiculo->anio }}</span></td>
+                <td class="px-4 py-3 hidden sm:table-cell" data-label="Cliente">
                     <a href="{{ route('clientes.show', $vehiculo->cliente) }}" class="hover:underline">{{ $vehiculo->cliente->nombre }}</a>
                 </td>
-                <td class="px-4 py-3 text-gray-600 hidden md:table-cell whitespace-nowrap">{{ $vehiculo->km_actual ? number_format($vehiculo->km_actual) . ' km' : '—' }}</td>
-                <td class="px-4 py-3 text-gray-600 hidden md:table-cell whitespace-nowrap">{{ $vehiculo->fecha_ultimo_service?->format('d/m/Y') ?? '—' }}</td>
-                <td class="px-4 py-3 text-right">
+                <td class="px-4 py-3 text-gray-600 hidden md:table-cell whitespace-nowrap" data-label="Km">{{ $vehiculo->km_actual ? number_format($vehiculo->km_actual) . ' km' : '—' }}</td>
+                <td class="px-4 py-3 text-gray-600 hidden md:table-cell whitespace-nowrap" data-label="Último service">{{ $vehiculo->fecha_ultimo_service?->format('d/m/Y') ?? '—' }}</td>
+                <td class="px-4 py-3 text-right td-acciones">
                     <a href="{{ route('vehiculos.show', $vehiculo) }}" class="text-blue-600 hover:underline text-xs">Ver</a>
                 </td>
             </tr>
             @empty
-            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-400">Sin vehículos.</td></tr>
+            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-400 td-vacio">Sin vehículos.</td></tr>
             @endforelse
         </tbody>
     </table>

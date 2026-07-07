@@ -20,8 +20,8 @@
     <button type="submit" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-colors">Filtrar</button>
 </form>
 
-<div class="bg-gray-800 rounded-xl overflow-hidden">
-    <table class="w-full text-sm">
+<div class="bg-gray-800 rounded-xl overflow-hidden table-cards-wrap">
+    <table class="w-full text-sm table-cards dark-cards">
         <thead class="bg-gray-900 text-gray-400">
             <tr>
                 <th class="text-left px-4 py-3">Nombre</th>
@@ -35,23 +35,23 @@
         <tbody class="divide-y divide-gray-700">
             @forelse($usuarios as $usuario)
             <tr>
-                <td class="px-4 py-3">{{ $usuario->nombre }}</td>
-                <td class="px-4 py-3 text-gray-400">{{ $usuario->email }}</td>
-                <td class="px-4 py-3 text-gray-400">{{ $usuario->taller?->nombre ?? '—' }}</td>
-                <td class="px-4 py-3 text-gray-400">{{ $usuario->rol }}</td>
-                <td class="px-4 py-3">
+                <td class="px-4 py-3" data-label="Nombre">{{ $usuario->nombre }}</td>
+                <td class="px-4 py-3 text-gray-400" data-label="Email">{{ $usuario->email }}</td>
+                <td class="px-4 py-3 text-gray-400" data-label="Taller">{{ $usuario->taller?->nombre ?? '—' }}</td>
+                <td class="px-4 py-3 text-gray-400" data-label="Rol">{{ $usuario->rol }}</td>
+                <td class="px-4 py-3" data-label="Estado">
                     <span class="{{ $usuario->activo ? 'text-green-400' : 'text-red-400' }} text-xs">
                         {{ $usuario->activo ? '● Activo' : '● Inactivo' }}
                     </span>
                 </td>
-                <td class="px-4 py-3 text-right">
+                <td class="px-4 py-3 text-right td-acciones">
                     <a href="{{ route('superadmin.usuarios.edit', $usuario) }}"
                        class="text-gray-400 hover:text-white text-xs mr-2">Editar</a>
                 </td>
             </tr>
             @empty
             <tr>
-                <td colspan="6" class="px-4 py-8 text-center text-gray-500">No hay usuarios.</td>
+                <td colspan="6" class="px-4 py-8 text-center text-gray-500 td-vacio">No hay usuarios.</td>
             </tr>
             @endforelse
         </tbody>

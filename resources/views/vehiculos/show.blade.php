@@ -47,8 +47,8 @@
             <div class="px-5 py-4 border-b">
                 <h2 class="font-semibold text-gray-800">Historial de órdenes</h2>
             </div>
-            <div class="overflow-x-auto">
-            <table class="w-full text-sm min-w-[420px]">
+            <div class="overflow-x-auto max-md:p-3">
+            <table class="w-full text-sm min-w-[420px] table-cards">
                 <thead class="bg-gray-50 border-b">
                     <tr>
                         <th class="text-left px-4 py-3 text-gray-600 font-medium">N° Orden</th>
@@ -60,19 +60,19 @@
                 <tbody class="divide-y divide-gray-100">
                     @forelse($ordenes as $orden)
                     <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3 font-mono">
+                        <td class="px-4 py-3 font-mono" data-label="N° Orden">
                             <a href="{{ route('ordenes.show', $orden) }}" class="hover:text-yellow-600">{{ $orden->numero }}</a>
                         </td>
-                        <td class="px-4 py-3 text-gray-600">{{ $orden->fecha_ingreso->format('d/m/Y') }}</td>
-                        <td class="px-4 py-3">
+                        <td class="px-4 py-3 text-gray-600" data-label="Ingreso">{{ $orden->fecha_ingreso->format('d/m/Y') }}</td>
+                        <td class="px-4 py-3" data-label="Estado">
                             <span class="px-2 py-0.5 rounded text-xs {{ $orden->estadoBadge() }}">
                                 {{ $orden->estadoLabel() }}
                             </span>
                         </td>
-                        <td class="px-4 py-3 text-right">${{ number_format($orden->total_estimado, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 text-right" data-label="Total">${{ number_format($orden->total_estimado, 0, ',', '.') }}</td>
                     </tr>
                     @empty
-                    <tr><td colspan="4" class="px-4 py-6 text-center text-gray-400">Sin órdenes.</td></tr>
+                    <tr><td colspan="4" class="px-4 py-6 text-center text-gray-400 td-vacio">Sin órdenes.</td></tr>
                     @endforelse
                 </tbody>
             </table>

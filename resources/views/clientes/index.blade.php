@@ -27,8 +27,8 @@
     </div>
 </form>
 
-<div class="bg-white rounded-xl shadow overflow-x-auto">
-    <table class="w-full text-sm min-w-[480px]">
+<div class="bg-white rounded-xl shadow overflow-x-auto table-cards-wrap">
+    <table class="w-full text-sm min-w-[480px] table-cards">
         <thead class="bg-gray-50 border-b">
             <tr>
                 <th class="text-left px-4 py-3 font-medium text-gray-600">Nombre</th>
@@ -42,7 +42,7 @@
         <tbody class="divide-y divide-gray-100">
             @forelse($clientes as $cliente)
             <tr class="hover:bg-gray-50">
-                <td class="px-4 py-3">
+                <td class="px-4 py-3" data-label="Nombre">
                     <a href="{{ route('clientes.show', $cliente) }}" class="font-medium text-gray-900 hover:text-yellow-600">
                         {{ $cliente->nombre }}
                     </a>
@@ -50,11 +50,11 @@
                     <span class="ml-1 text-xs text-gray-400">(inactivo)</span>
                     @endunless
                 </td>
-                <td class="px-4 py-3 text-gray-600 hidden md:table-cell">{{ $cliente->tipo_doc }}: {{ $cliente->nro_doc ?? '—' }}</td>
-                <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{{ $cliente->telefono_display }}</td>
-                <td class="px-4 py-3 text-gray-600 hidden lg:table-cell">{{ $cliente->email ?? '—' }}</td>
-                <td class="px-4 py-3 text-center">{{ $cliente->vehiculos_count ?? $cliente->vehiculos()->count() }}</td>
-                <td class="px-4 py-3 text-right">
+                <td class="px-4 py-3 text-gray-600 hidden md:table-cell" data-label="Documento">{{ $cliente->tipo_doc }}: {{ $cliente->nro_doc ?? '—' }}</td>
+                <td class="px-4 py-3 text-gray-600 whitespace-nowrap" data-label="Teléfono">{{ $cliente->telefono_display }}</td>
+                <td class="px-4 py-3 text-gray-600 hidden lg:table-cell" data-label="Email">{{ $cliente->email ?? '—' }}</td>
+                <td class="px-4 py-3 text-center" data-label="Vehículos">{{ $cliente->vehiculos_count ?? $cliente->vehiculos()->count() }}</td>
+                <td class="px-4 py-3 text-right td-acciones">
                     <a href="{{ route('clientes.show', $cliente) }}" class="text-blue-600 hover:underline text-xs">Ver</a>
                     @if(auth()->user()->esAdministrador())
                     <a href="{{ route('clientes.edit', $cliente) }}" class="ml-2 text-gray-500 hover:underline text-xs">Editar</a>
@@ -62,7 +62,7 @@
                 </td>
             </tr>
             @empty
-            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-400">Sin resultados.</td></tr>
+            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-400 td-vacio">Sin resultados.</td></tr>
             @endforelse
         </tbody>
     </table>

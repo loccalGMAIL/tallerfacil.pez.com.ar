@@ -41,6 +41,11 @@ Sistema de gestión para talleres mecánicos. Manejo de clientes, vehículos, ó
 ## Convenciones
 - Nombres de modelos y tablas en español
 - php artisan pail **no disponible** en Windows (sin extensión pcntl) — removido del script dev
+- **Tablas → cards en mobile**: toda tabla de datos lleva clase `table-cards` (+ `dark-cards` en superadmin), `data-label` en cada td, `td-acciones` en la celda de acciones y `td-vacio` en la fila vacía con colspan. CSS en `resources/css/app.css` (bloque sin @layer, <768px). El PDF de cotización queda fuera.
+
+## PWA
+- Instalable: `public/manifest.webmanifest`, íconos en `public/icons/` (regenerables con `php scripts/generar-iconos.php`), SW mínimo `public/sw.js` (registrado solo en PROD desde `resources/js/app.js`)
+- Banner "Agregar a pantalla de inicio": componente Alpine `pwaInstall` (app.js) + partial `layouts/partials/pwa-banner.blade.php` (solo layout app); iOS muestra instrucciones, Android usa `beforeinstallprompt`; descarte persistido en localStorage
 
 ## Setup inicial
 ```bash

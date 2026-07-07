@@ -47,7 +47,7 @@
 
     @if($sus->pagos->isNotEmpty())
     <h3 class="text-sm font-semibold text-gray-300 mb-2">Pagos</h3>
-    <table class="w-full text-xs">
+    <table class="w-full text-xs table-cards dark-cards">
         <thead class="text-gray-500">
             <tr>
                 <th class="text-left pb-1">Fecha</th>
@@ -59,14 +59,14 @@
         <tbody class="divide-y divide-gray-700">
             @foreach($sus->pagos as $pago)
             <tr>
-                <td class="py-1 text-gray-400">{{ $pago->fecha_pago?->format('d/m/Y') ?? '—' }}</td>
-                <td class="py-1">${{ number_format($pago->monto, 2, ',', '.') }}</td>
-                <td class="py-1">
+                <td class="py-1 text-gray-400" data-label="Fecha">{{ $pago->fecha_pago?->format('d/m/Y') ?? '—' }}</td>
+                <td class="py-1" data-label="Monto">${{ number_format($pago->monto, 2, ',', '.') }}</td>
+                <td class="py-1" data-label="Estado">
                     <span class="{{ $pago->estado === 'aprobado' ? 'text-green-400' : 'text-red-400' }}">
                         {{ ucfirst($pago->estado) }}
                     </span>
                 </td>
-                <td class="py-1 font-mono text-gray-500">{{ $pago->mp_payment_id ?? '—' }}</td>
+                <td class="py-1 font-mono text-gray-500" data-label="MP ID">{{ $pago->mp_payment_id ?? '—' }}</td>
             </tr>
             @endforeach
         </tbody>

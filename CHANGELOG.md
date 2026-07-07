@@ -9,6 +9,11 @@ Versionado semántico: `MAJOR.MINOR.PATCH` — en `0.x.y`, el MINOR es un sprint
 
 ### Agregado
 
+**Mobile / PWA**
+- Tablas responsive: en mobile (<768px) todas las tablas de datos se muestran como cards apiladas (patrón CSS `.table-cards` + `data-label` por celda; variante `.dark-cards` para superadmin)
+- PWA instalable: web app manifest (`public/manifest.webmanifest`), íconos generados (llave amarilla sobre gris oscuro, `scripts/generar-iconos.php`), service worker mínimo (`public/sw.js`, solo producción)
+- Banner "Agregar a pantalla de inicio": prompt nativo en Android/Chrome (`beforeinstallprompt`), instrucciones de Compartir en iOS Safari; descartable con persistencia en localStorage
+
 **Dashboard**
 - Tablero Kanban con columnas por estado (recepcion / cotizacion / reparacion / listo)
 - Drag-and-drop entre columnas via SortableJS → `PATCH /ordenes/{id}/mover`

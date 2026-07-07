@@ -19,8 +19,8 @@
     <button type="submit" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-colors">Filtrar</button>
 </form>
 
-<div class="bg-gray-800 rounded-xl overflow-hidden">
-    <table class="w-full text-sm">
+<div class="bg-gray-800 rounded-xl overflow-hidden table-cards-wrap">
+    <table class="w-full text-sm table-cards dark-cards">
         <thead class="bg-gray-900 text-gray-400">
             <tr>
                 <th class="text-left px-4 py-3">Fecha</th>
@@ -33,13 +33,13 @@
         <tbody class="divide-y divide-gray-700">
             @forelse($logs as $log)
             <tr>
-                <td class="px-4 py-3 text-gray-500 text-xs">{{ $log->created_at->format('d/m/Y H:i') }}</td>
-                <td class="px-4 py-3">
+                <td class="px-4 py-3 text-gray-500 text-xs" data-label="Fecha">{{ $log->created_at->format('d/m/Y H:i') }}</td>
+                <td class="px-4 py-3" data-label="Categoría">
                     <span class="bg-gray-700 text-gray-300 text-xs px-2 py-0.5 rounded">{{ $log->log_name }}</span>
                 </td>
-                <td class="px-4 py-3 text-gray-200">{{ $log->description }}</td>
-                <td class="px-4 py-3 text-gray-400 text-xs">{{ $log->causer?->nombre ?? '—' }}</td>
-                <td class="px-4 py-3 text-gray-500 text-xs">
+                <td class="px-4 py-3 text-gray-200" data-label="Evento">{{ $log->description }}</td>
+                <td class="px-4 py-3 text-gray-400 text-xs" data-label="Usuario">{{ $log->causer?->nombre ?? '—' }}</td>
+                <td class="px-4 py-3 text-gray-500 text-xs" data-label="Sujeto">
                     @if($log->subject_type)
                         {{ class_basename($log->subject_type) }} #{{ $log->subject_id }}
                     @else
@@ -49,7 +49,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="px-4 py-8 text-center text-gray-500">Sin registros.</td>
+                <td colspan="5" class="px-4 py-8 text-center text-gray-500 td-vacio">Sin registros.</td>
             </tr>
             @endforelse
         </tbody>
