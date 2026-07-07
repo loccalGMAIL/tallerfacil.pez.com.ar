@@ -20,8 +20,9 @@
 <nav class="bg-gray-900 border-b border-gray-800">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
         <div class="flex items-center gap-6">
-            <a href="{{ route('superadmin.dashboard') }}" class="font-bold text-lg tracking-tight text-yellow-400">
-                ⚙️ TallerFácil Admin
+            <a href="{{ route('superadmin.dashboard') }}" class="leading-none">
+                <span class="font-bold text-lg tracking-tight text-yellow-400">⚙️ TallerFácil Admin</span>
+                <span class="block text-[9px] text-gray-500 tracking-widest pl-7 mt-0.5">v{{ config('app.version') }}</span>
             </a>
             <div class="hidden md:flex gap-1 text-sm">
                 <a href="{{ route('superadmin.dashboard') }}"
