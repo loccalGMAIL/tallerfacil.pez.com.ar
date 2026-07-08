@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\ImpersonacionController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NegocioController;
@@ -79,6 +80,9 @@ Route::post('/invitacion/{token}', [InvitacionController::class, 'register'])->n
 // Panel de taller — aplica el middleware de tenant
 // ============================================================
 Route::middleware(['taller'])->group(function () {
+
+    // Impersonation desde el portal admin (token de un solo uso, sin auth previa)
+    Route::get('/impersonar/{token}', [ImpersonacionController::class, 'consumir'])->name('impersonar.consumir');
 
     // Panel principal — requiere autenticación
     Route::middleware(['auth', 'suscripcion.activa'])->group(function () {

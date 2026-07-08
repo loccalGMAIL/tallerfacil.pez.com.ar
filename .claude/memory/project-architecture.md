@@ -38,8 +38,15 @@ Sistema de gestión para talleres mecánicos. Manejo de clientes, vehículos, ó
 - `routes/api.php` — API
 - `routes/console.php` — comandos
 
+## Portal admin (proyecto hermano)
+- `D:\DESARROLLO\CoDiGo\admin.tallerfacil.pez.com.ar` — portal administrativo SaaS (Laravel 12, Blade+Alpine+Tailwind 4) que reemplaza gradualmente al superadmin embebido.
+- **Misma BD MySQL**: el portal solo crea tablas `portal_*` y usa `portal_migrations`/`portal_sessions`/`portal_cache`. Regla: tablas de dominio → migraciones SOLO acá; `portal_*` → SOLO en el portal.
+- **Sin colas** (Hostinger compartido): ambas apps con `QUEUE_CONNECTION=sync`; automatización por cron (`schedule:run`).
+- Integración: TallerFácil expone `GET /impersonar/{token}` (tokens en `portal_impersonation_tokens`) y su webhook Evolution escribe en `portal_wa_eventos` y `portal_wa_contadores_diarios`.
+
 ## Convenciones
 - Nombres de modelos y tablas en español
+- **Todo modelo declara `protected $table` explícito** — la pluralización inglesa de Eloquent rompe con nombres en español (`Taller`→`tallers`); bug latente corregido el 2026-07-08
 - **Versión del sistema**: `config/app.php` → `'version'` (leer con `config('app.version')`); mantener en sincronía con el encabezado de CHANGELOG.md al publicar
 - **Ramas**: prefijo con la versión en curso — `v{version}/feature/{nombre}` (ej. `v0.2.0/feature/mobile-cards-pwa`)
 - php artisan pail **no disponible** en Windows (sin extensión pcntl) — removido del script dev

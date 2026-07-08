@@ -17,6 +17,17 @@
 </head>
 <body class="bg-gray-100 min-h-screen" x-data>
 
+{{-- Banner de sesión de soporte (impersonation desde el portal admin) --}}
+@if (session('impersonado_por_portal'))
+    <div class="bg-amber-400 text-amber-950 text-sm font-medium px-4 py-1.5 flex items-center justify-center gap-3">
+        <span>🛠 Sesión de soporte — estás viendo como <strong>{{ auth()->user()?->nombre }}</strong></span>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="underline hover:no-underline">Salir</button>
+        </form>
+    </div>
+@endif
+
 <nav class="bg-gray-900 text-white">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
         <div class="flex items-center gap-6">
