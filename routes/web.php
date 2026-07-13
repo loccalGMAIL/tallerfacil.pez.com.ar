@@ -92,6 +92,7 @@ Route::middleware(['taller'])->group(function () {
         // Perfil
         Route::get('/perfil', [PerfilController::class, 'edit'])->name('perfil.edit');
         Route::put('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
+        Route::delete('/perfil/google', [PerfilController::class, 'desvincularGoogle'])->name('perfil.google.destroy');
 
         // Clientes
         Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');

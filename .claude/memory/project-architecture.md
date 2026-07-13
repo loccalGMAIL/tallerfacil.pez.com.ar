@@ -54,7 +54,16 @@ Sistema de gestión para talleres mecánicos. Manejo de clientes, vehículos, ó
 
 ## PWA
 - Instalable: `public/manifest.webmanifest`, íconos en `public/icons/` (regenerables con `php scripts/generar-iconos.php`), SW mínimo `public/sw.js` (registrado solo en PROD desde `resources/js/app.js`)
-- Banner "Agregar a pantalla de inicio": componente Alpine `pwaInstall` (app.js) + partial `layouts/partials/pwa-banner.blade.php` (solo layout app); iOS muestra instrucciones, Android usa `beforeinstallprompt`; descarte persistido en localStorage
+- Banner "Agregar a pantalla de inicio": componente Alpine `pwaInstall` (app.js) + partial `layouts/partials/pwa-banner.blade.php` (solo layout app); iOS muestra instrucciones, Android usa `beforeinstallprompt`; descarte persistido en `localStorage['pwa-banner-descartado']` (no expira solo)
+- **Restablecer el banner tras cerrarlo**: en Mi perfil (`resources/views/perfil/edit.blade.php`), sección "Aviso de instalación" — botón client-side (Alpine, sin backend) que limpia esa clave de localStorage. Ahí porque es un dato por-navegador-de-cada-usuario, no del negocio (Configuración es solo-admin)
+
+## Google OAuth (login con Google)
+- Proyecto en Google Cloud Console: **TallerFacil** (`tallerfacil-501701`), cuenta loccal@gmail.com. Pantalla de consentimiento: Externo, estado **Prueba** (máx. 100 usuarios, solo los agregados en "Usuarios de prueba" pueden loguearse hasta publicar la app).
+- Cliente OAuth "TallerFacil Web" con orígenes/redirect URIs para `http://localhost:8000` y `https://tallerfacil.pez.com.ar` (path `/auth/google/callback`). Credenciales en `.env` (`GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`/`GOOGLE_REDIRECT_URI`), config en `config/services.php`, lógica en `app/Http/Controllers/Auth/GoogleController.php` (usa Socialite).
+- **Vincular/desvincular** desde Mi perfil (`PerfilController::desvincularGoogle`, ruta `DELETE /perfil/google`): desvincular está bloqueado si `usuario->password` es null (evita dejar la cuenta sin forma de loguearse).
+- **`APP_URL` debe incluir el puerto** (`http://localhost:8000`, no `http://localhost`) — si no coincide exacto con el redirect URI registrado en Google, falla con `redirect_uri_mismatch`.
+- Para agregar más usuarios de prueba o pasar a producción: Google Cloud Console → TallerFacil → Google Auth Platform → Público.
+- Verificado end-to-end el 2026-07-10 (login vinculó `google_id` correctamente).
 
 ## Setup inicial
 ```bash

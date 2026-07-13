@@ -102,10 +102,17 @@
                 <p class="text-sm font-medium text-gray-800">Google vinculado</p>
                 <p class="text-xs text-gray-500">Podés ingresar con tu cuenta de Google.</p>
             </div>
-            <span class="ml-auto inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 border border-green-200 rounded px-2 py-1">
+            <span class="ml-auto inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 border border-green-200 rounded px-2 py-1 shrink-0">
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 Activo
             </span>
+            <form method="POST" action="{{ route('perfil.google.destroy') }}" class="shrink-0"
+                onsubmit="return confirm('¿Desvincular tu cuenta de Google? Vas a dejar de poder ingresar con un click.')">
+                @csrf @method('DELETE')
+                <button type="submit" class="text-xs text-gray-400 hover:text-red-500 transition-colors">
+                    Desvincular
+                </button>
+            </form>
         </div>
         @else
         <div class="flex items-center justify-between gap-3">
@@ -120,6 +127,28 @@
             </a>
         </div>
         @endif
+    </div>
+
+    {{-- Aviso de instalación (PWA) --}}
+    <div class="mt-5 bg-white rounded-xl shadow-sm border border-gray-200 px-6 py-5"
+         x-data="{ restablecido: localStorage.getItem('pwa-banner-descartado') === null }">
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-4">Aviso de instalación</p>
+        <div class="flex items-center justify-between gap-3">
+            <div>
+                <p class="text-sm font-medium text-gray-700">"Agregar a pantalla de inicio"</p>
+                <p class="text-xs text-gray-500" x-show="!restablecido">
+                    Si cerraste el aviso para instalar TallerFácil como app, podés hacer que vuelva a aparecer en este dispositivo.
+                </p>
+                <p class="text-xs text-green-600" x-show="restablecido" x-cloak>
+                    Va a volver a aparecer la próxima vez que abras la app.
+                </p>
+            </div>
+            <button type="button" x-show="!restablecido"
+                @click="localStorage.removeItem('pwa-banner-descartado'); restablecido = true"
+                class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors shrink-0">
+                Mostrar de nuevo
+            </button>
+        </div>
     </div>
 
 </div>

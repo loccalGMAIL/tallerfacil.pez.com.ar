@@ -39,4 +39,18 @@ class PerfilController extends Controller
 
         return redirect()->route('perfil.edit')->with('success', 'Perfil actualizado correctamente.');
     }
+
+    public function desvincularGoogle(Request $request)
+    {
+        $usuario = auth()->user();
+
+        if (is_null($usuario->password)) {
+            return redirect()->route('perfil.edit')
+                ->withErrors(['google' => 'Antes de desvincular Google, configurá una contraseña para no quedarte sin acceso.']);
+        }
+
+        $usuario->update(['google_id' => null, 'google_avatar' => null]);
+
+        return redirect()->route('perfil.edit')->with('success', 'Cuenta de Google desvinculada correctamente.');
+    }
 }
