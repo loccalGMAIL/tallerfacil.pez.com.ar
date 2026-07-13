@@ -11,6 +11,8 @@ class Vehiculo extends Model
 {
     use BelongsToTaller;
 
+    protected $table = 'vehiculos';
+
     protected $fillable = [
         'cliente_id', 'patente', 'marca', 'modelo', 'anio',
         'km_actual', 'combustible', 'fecha_ultimo_service',

@@ -11,6 +11,8 @@ class Cliente extends Model
 {
     use BelongsToTaller;
 
+    protected $table = 'clientes';
+
     protected $fillable = [
         'nombre', 'tipo_doc', 'nro_doc', 'telefono_normalizado',
         'telefono_display', 'email', 'direccion', 'notas', 'activo',

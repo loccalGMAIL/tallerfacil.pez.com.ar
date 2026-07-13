@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\ImpersonacionController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NegocioController;
@@ -80,6 +81,9 @@ Route::post('/invitacion/{token}', [InvitacionController::class, 'register'])->n
 // ============================================================
 Route::middleware(['taller'])->group(function () {
 
+    // Impersonation desde el portal admin (token de un solo uso, sin auth previa)
+    Route::get('/impersonar/{token}', [ImpersonacionController::class, 'consumir'])->name('impersonar.consumir');
+
     // Panel principal — requiere autenticación
     Route::middleware(['auth', 'suscripcion.activa'])->group(function () {
 
@@ -88,6 +92,7 @@ Route::middleware(['taller'])->group(function () {
         // Perfil
         Route::get('/perfil', [PerfilController::class, 'edit'])->name('perfil.edit');
         Route::put('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
+        Route::delete('/perfil/google', [PerfilController::class, 'desvincularGoogle'])->name('perfil.google.destroy');
 
         // Clientes
         Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Taller extends Model
 {
+    protected $table = 'talleres';
+
     protected $fillable = [
         'nombre',
         'razon_social',

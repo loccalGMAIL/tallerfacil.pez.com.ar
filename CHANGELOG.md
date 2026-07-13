@@ -5,7 +5,7 @@ Versionado semántico: `MAJOR.MINOR.PATCH` — en `0.x.y`, el MINOR es un sprint
 
 ---
 
-## [Sin publicar] — v0.2.0
+## [Sin publicar] — v0.2.1
 
 ### Agregado
 
@@ -13,6 +13,12 @@ Versionado semántico: `MAJOR.MINOR.PATCH` — en `0.x.y`, el MINOR es un sprint
 - Tablas responsive: en mobile (<768px) todas las tablas de datos se muestran como cards apiladas (patrón CSS `.table-cards` + `data-label` por celda; variante `.dark-cards` para superadmin)
 - PWA instalable: web app manifest (`public/manifest.webmanifest`), íconos generados (llave amarilla sobre gris oscuro, `scripts/generar-iconos.php`), service worker mínimo (`public/sw.js`, solo producción)
 - Banner "Agregar a pantalla de inicio": prompt nativo en Android/Chrome (`beforeinstallprompt`), instrucciones de Compartir en iOS Safari; descartable con persistencia en localStorage
+- Mi perfil → "Aviso de instalación": botón para volver a mostrar el banner en el dispositivo si el usuario lo había cerrado
+
+**Autenticación**
+- Login con Google (Laravel Socialite): botón en la pantalla de ingreso, alta automática de usuario al aceptar una invitación con Google
+- Mi perfil → "Cuenta de Google": vincular una cuenta ya existente, y desvincularla (bloqueado si el usuario no tiene contraseña propia, para no perder el acceso)
+- Versión del sistema (`config('app.version')`) visible en tipografía pequeña bajo el logo — navbar, login e invitación
 
 **Dashboard**
 - Tablero Kanban con columnas por estado (recepcion / cotizacion / reparacion / listo)
